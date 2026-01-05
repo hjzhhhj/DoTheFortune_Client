@@ -2,13 +2,16 @@ import React from "react";
 import "./Home.css";
 import Logo from "../../assets/homelogo.svg";
 import banners, { BannerCarousel } from "../../components/home/Banner";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <div className="homePage">
       <div className="top-container">
         <svg
+          className="top-wave"
           xmlns="http://www.w3.org/2000/svg"
           width="1944"
           height="338"
@@ -30,6 +33,7 @@ export default function Home() {
           height="83"
           viewBox="0 0 90 83"
           fill="none"
+          onClick={() => navigate("/mypage")}
         >
           <path
             d="M45.0001 50C54.2084 50 61.6667 42.5416 61.6667 33.3333C61.6667 24.125 54.2084 16.6666 45.0001 16.6666C35.7917 16.6666 28.3334 24.125 28.3334 33.3333C28.3334 42.5416 35.7917 50 45.0001 50ZM45.0001 58.3333C33.8751 58.3333 11.6667 63.9166 11.6667 75V79.1666C11.6667 81.4583 13.5417 83.3333 15.8334 83.3333H74.1667C76.4584 83.3333 78.3334 81.4583 78.3334 79.1666V75C78.3334 63.9166 56.1251 58.3333 45.0001 58.3333Z"
@@ -38,7 +42,7 @@ export default function Home() {
         </svg>
       </div>
       <div className="banner-container">
-        <BannerCarousel interval={5000} height={420} />
+        <BannerCarousel interval={5000} height={550} />
       </div>
     </div>
   );

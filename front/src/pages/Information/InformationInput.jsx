@@ -1,9 +1,30 @@
 import React, { useMemo, useState } from "react";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthFrame from "../../components/auth/AuthFrame";
 import "./InformationInput.css";
 import Goback from "../../components/goback";
 export default function InformationInput() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  // Banner.jsx에서 넘겨준 타입(1|2|3) 받기
+  // 1) navigate(path, { state: { type: 1 } })
+  // 2) path?type=1 (쿼리스트링)
+  const bannerTypeRaw =
+    location?.state?.type ?? location?.state?.bannerType ?? searchParams.get("type");
+  const bannerType = Number(bannerTypeRaw) || 0;
+
+  const saveBtnText =
+    bannerType === 1
+      ? "유사 사주 친구 찾기"
+      : bannerType === 2
+      ? "미래 배우자 보러가기"
+      : bannerType === 3
+      ? "다음으로"
+      : "정보 저장하기";
+
   // TODO: 실제 로그인 유저명으로 교체 input 기본값도 실제 로그인 유저명으로
   const name = "희진";
 
@@ -42,6 +63,17 @@ export default function InformationInput() {
 
     // TODO: 저장 로직(Supabase/서버) 연결
     console.log("SAVE:", form);
+
+    if (bannerType === 3) {
+      // 상대방 정보 입력 화면으로 이동
+      navigate("/other-party-information", {
+        state: {
+          type: bannerType,
+          myInfo: form,
+        },
+      });
+      return;
+    }
 
     alert("정보가 저장되었습니다! (콘솔 확인)");
   };
@@ -136,7 +168,7 @@ export default function InformationInput() {
           />
 
           <button className="saveBtn" type="submit">
-            정보 저장하기
+            {saveBtnText}
           </button>
         </form>
       </AuthFrame>
