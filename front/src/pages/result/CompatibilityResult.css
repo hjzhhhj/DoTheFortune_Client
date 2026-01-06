@@ -1,0 +1,388 @@
+@font-face {
+  font-family: "Paperozi";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-5Medium.woff2")
+    format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Paperozi";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2")
+    format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+
+.compat-result-root {
+  position: relative;
+  min-height: 100vh;
+  background: #fff9d7;
+  font-family: "Paperozi", system-ui, -apple-system, "Segoe UI", sans-serif;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 140px;
+}
+
+.compat-content {
+  width: 100%;
+  max-width: 1500px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
+
+/* 배경 레이어 */
+.compat-bg-layers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.compat-bg-layer {
+  position: absolute;
+  width: 1508px;
+  height: 865px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 1;
+}
+
+.compat-bg-layer-1 { top: 80px; }
+.compat-bg-layer-2 { top: 320px; }
+.compat-bg-layer-3 { top: 560px; }
+.compat-bg-layer-4 { top: 800px; }
+.compat-bg-layer-5 { top: 1040px; }
+.compat-bg-layer-6 { top: 1280px; }
+.compat-bg-layer-7 { top: 1520px; }
+.compat-bg-layer-8 { top: 1760px; }
+.compat-bg-layer-9 { top: 2000px; }
+.compat-bg-layer-10 { top: 2240px; }
+.compat-bg-layer-11 { top: 2480px; }
+.compat-bg-layer-12 { top: 2720px; }
+.compat-bg-layer-13 { top: 2960px; }
+.compat-bg-layer-14 { top: 3200px; }
+.compat-bg-layer-15 { top: 3440px; }
+.compat-bg-layer-16 { top: 3680px; }
+
+.compat-bg-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* 헤더 */
+.compat-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 32px 0;
+  margin-left: -170px;
+}
+
+.compat-logo-wrap {
+  width: 64px;
+  height: 60px;
+}
+
+.compat-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.compat-header-title {
+  margin: 0;
+  font-size: 36px;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 1px;
+}
+
+/* 메인 영역 */
+.compat-main {
+  padding-bottom: 120px;
+}
+
+.compat-main-title {
+  margin: 12px 0 48px;
+  text-align: center;
+  font-size: 42px;
+  font-weight: 700;
+  color: #333;
+  line-height: 1.2;
+  margin-top: 70px;
+}
+
+/* 사용자 정보 카드 */
+.compat-users {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 48px;
+  margin-bottom: 56px;
+}
+
+.compat-user-card {
+  position: relative;
+  width: 520px;
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.compat-user-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.compat-user-bg-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.compat-user-text {
+  position: relative;
+}
+
+.compat-user-title {
+  margin: 0 0 12px;
+  font-size: 30px;
+  font-weight: 500;
+  color: #000;
+}
+
+.compat-user-desc {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 500;
+  color: #000;
+  white-space: pre-line;
+  text-align: left;
+  margin-top: 20px;
+}
+
+/* 공통 섹션 박스 */
+.compat-section {
+  position: relative;
+  margin: 0 auto 56px;
+  padding: 80px 100px;
+  width: 100%;
+  max-width: 1400px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 섹션 배경을 흰색 blob 모양과 동일한 형태로 사용 */
+.compat-section-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.compat-section-bg-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.compat-section-inner {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.compat-section-title {
+  margin: 0 0 32px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* 두 사람의 오행 비교 */
+.compat-section-comparison {
+  min-height: 520px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.compat-comparison-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+}
+
+.compat-pie-chart {
+  width: 220px;
+  height: 220px;
+}
+
+.compat-comparison-text {
+  margin: 0;
+  max-width: 680px;
+  font-size: 28px;
+  font-weight: 500;
+  color: #000;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* 관계별 궁합 분석 */
+.compat-section-analysis {
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.compat-analysis-text {
+  margin: 0;
+  max-width: 900px;
+  text-align: center;
+  font-size: 28px;
+  font-weight: 500;
+  color: #000;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* 하단 버튼 */
+.compat-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin-top: 60px;
+}
+
+.compat-action-btn {
+  width: 780px;
+  max-width: 100%;
+  height: 76px;
+  border: none;
+  border-radius: 18px;
+  background: #fff3ae;
+  font-size: 26px;
+  font-weight: 500;
+  color: #333;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.compat-action-btn:hover {
+  background: #ffe893;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+.compat-action-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* 반응형 */
+@media (max-width: 1280px) {
+  .compat-bg-layer {
+    width: 1300px;
+    height: 750px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .compat-content {
+    padding: 0 16px;
+  }
+
+  .compat-main-title {
+    font-size: 34px;
+  }
+
+  .compat-section {
+    padding: 40px 32px;
+  }
+
+  .compat-section-title {
+    font-size: 26px;
+  }
+
+  .compat-comparison-text,
+  .compat-analysis-text {
+    font-size: 22px;
+  }
+
+  .compat-action-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .compat-logo-wrap {
+    width: 52px;
+    height: 48px;
+  }
+
+  .compat-header-title {
+    font-size: 26px;
+  }
+
+  .compat-main-title {
+    font-size: 28px;
+    margin-bottom: 32px;
+  }
+
+  .compat-user-card {
+    height: auto;
+    padding: 20px 12px;
+  }
+
+  .compat-user-title {
+    font-size: 24px;
+  }
+
+  .compat-user-desc {
+    font-size: 22px;
+  }
+
+  .compat-section {
+    padding: 28px 20px;
+  }
+
+  .compat-section-title {
+    font-size: 22px;
+  }
+
+  .compat-pie-chart {
+    width: 180px;
+    height: 180px;
+  }
+
+  .compat-comparison-text,
+  .compat-analysis-text {
+    font-size: 20px;
+  }
+
+  .compat-action-btn {
+    height: 64px;
+    font-size: 22px;
+  }
+}
+
+
