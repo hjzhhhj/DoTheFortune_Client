@@ -1,8 +1,81 @@
 import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import logo from '../assets/logo.svg';
+import Header from "../components/Header";
+import Loading from '../components/loading/Loading';
 
 const GlobalStyle = createGlobalStyle`
+    @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-1Thin.woff2")
+      format("woff2");
+    font-weight: 100;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-2ExtraLight.woff2")
+      format("woff2");
+    font-weight: 200;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-3Light.woff2")
+      format("woff2");
+    font-weight: 300;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2")
+      format("woff2");
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-5Medium.woff2")
+      format("woff2");
+    font-weight: 500;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-6SemiBold.woff2")
+      format("woff2");
+    font-weight: 600;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2")
+      format("woff2");
+    font-weight: 700;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2")
+      format("woff2");
+    font-weight: 800;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-9Black.woff2")
+      format("woff2");
+    font-weight: 900;
+    font-display: swap;
+  }
   * { box-sizing: border-box; }
   body {
     margin: 0;
@@ -10,7 +83,8 @@ const GlobalStyle = createGlobalStyle`
     width: 100%;
     height: 100%;
     overflow: hidden;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Paperozi";
+
   }
 `;
 
@@ -24,7 +98,7 @@ const Container = styled.div`
   position: relative;
 `;
 
-const TopHeader = styled.div`
+const TopHeader = styled(Header)`
   position: absolute;
   top: 30px;
   left: 40px;
@@ -32,18 +106,16 @@ const TopHeader = styled.div`
   align-items: center;
   gap: 12px;
   z-index: 10;
-`;
 
-const Logo = styled.div`
-  font-size: 50px;
-  line-height: 1;
-  img { width: 50px; }
-`;
+  .header__logo {
+    width: 50px;
+  }
 
-const Title = styled.div`
-  font-size: 30px;
-  font-weight: bold;
-  color: #2c2c2c;
+  .header__title {
+    font-size: 30px;
+    font-weight: bold;
+    color: #2c2c2c;
+  }
 `;
 
 const ContentCard = styled.div`
@@ -151,6 +223,7 @@ const InfoItem = styled.div`
 `;
 
 const SaveButton = styled.button`
+  font-family: "Paperozi";
   width: 100%;
   max-width: 500px;
   height: 48px;
@@ -163,6 +236,7 @@ const SaveButton = styled.button`
   cursor: pointer;
   transition: all 0.3s;
   font-weight: 400;
+
 
   &:hover {
     background: #FFD93D;
@@ -233,12 +307,7 @@ export default function SpousePage() {
 
   if (loading) {
     return (
-      <Container>
-        <LoadingMessage>
-          <div>🔮</div>
-          <div>결과 분석 중입니다...</div>
-        </LoadingMessage>
-      </Container>
+      <Loading>결과를 불러오는 중입니다...</Loading>
     );
   }
 
@@ -254,11 +323,7 @@ export default function SpousePage() {
     <>
       <GlobalStyle />
       <Container>
-        <TopHeader>
-          <Logo><img src={logo} alt="logo"/></Logo>
-          <Title>빌려온 사주</Title>
-        </TopHeader>
-
+        <TopHeader logoSrc={logo} title="빌려온 사주" showSettings={false} />
         <ContentCard>
           <TextGroup>
             <MainTitle>나의 미래 배우자는?</MainTitle>

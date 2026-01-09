@@ -7,6 +7,8 @@ import MyPage from "./pages/MyPage/MyPage";
 import Home from "./pages/Home/Home";
 import SplashScreen from "./pages/SplashScreen/SplashScreen";
 import CompatibilityResult from "./pages/result/CompatibilityResult";
+import FriendResult from "./pages/friendResult";
+import SpousePage from "./pages/spousePage";
 
 export default function App() {
   return (
@@ -20,6 +22,8 @@ export default function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/result" element={<CompatibilityResult />} />
+        <Route path="/friend-result" element={<FriendResult />} />
+        <Route path="/spouse-result" element={<SpousePage />} />
       </Routes>
   );
 }

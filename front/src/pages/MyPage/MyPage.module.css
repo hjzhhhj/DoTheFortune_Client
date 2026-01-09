@@ -95,14 +95,15 @@ body {
 }
 
 .logo {
-  width: 34px;
-  height: 34px;
+  width: 60px;
+  height: 60px;
   display: block;
+  margin-left: 20px;
 }
 
 .brandTitle {
   font-size: 22px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.02em;
 }
 

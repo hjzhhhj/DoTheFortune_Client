@@ -4,46 +4,108 @@ import styled, { createGlobalStyle } from "styled-components";
 import cloud from "../assets/cloud.png";
 import darkCloud from "../assets/darkCloud.png";
 import smallCloud from "../assets/smallDarkCloud.png";
-import logo from '../assets/logo.svg';
+import logo from "../assets/logo.svg";
+import Header from "../components/Header";
 
 const GlobalStyle = createGlobalStyle`
-  
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-1Thin.woff2")
+      format("woff2");
+    font-weight: 100;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-2ExtraLight.woff2")
+      format("woff2");
+    font-weight: 200;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-3Light.woff2")
+      format("woff2");
+    font-weight: 300;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2")
+      format("woff2");
+    font-weight: 400;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-5Medium.woff2")
+      format("woff2");
+    font-weight: 500;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-6SemiBold.woff2")
+      format("woff2");
+    font-weight: 600;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2")
+      format("woff2");
+    font-weight: 700;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2")
+      format("woff2");
+    font-weight: 800;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: "Paperozi";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-9Black.woff2")
+      format("woff2");
+    font-weight: 900;
+    font-display: swap;
+  }
   body {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
     margin: 0;
     padding: 0;
     background-color: #fff9d7;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
+    font-family: "Paperozi";
     align-items: center;
     display: flex;
     justify-content: center;
     background-size: cover;
-    
   }
-    #root {
-    min-height: 100vh; 
+
+  #root {
+    min-height: 100vh;
   }
 `;
-const Logo = styled.div`
-  font-size: 50px;
-  line-height: 1;
-`;
-const LogoTitle = styled.div`
-  font-size: 30px;
-  font-weight: bold;
-  
-`;
+
 const Page = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 80px;
-  min-height: 100vh;      
-  background: #fff9d7;   
-  padding-bottom: 100px;  
-  box-sizing: border-box; 
-  `;
-
+  min-height: 100vh;
+  background: #fff9d7;
+  padding-bottom: 100px;
+  box-sizing: border-box;
+`;
 
 const CardWrap = styled.div`
   position: relative;
@@ -61,9 +123,18 @@ const BigCloud = styled.div`
   background: url(${cloud}) no-repeat center / contain;
 `;
 
-const Big1 = styled(BigCloud)`top: -100px; z-index: 3;`;
-const Big2 = styled(BigCloud)`top: 175px; z-index: 2;`;
-const Big3 = styled(BigCloud)`top: 350px; z-index: 1;`;
+const Big1 = styled(BigCloud)`
+  top: -100px;
+  z-index: 3;
+`;
+const Big2 = styled(BigCloud)`
+  top: 175px;
+  z-index: 2;
+`;
+const Big3 = styled(BigCloud)`
+  top: 350px;
+  z-index: 1;
+`;
 
 const Content = styled.div`
   position: absolute;
@@ -162,6 +233,7 @@ const EmptyCircle = styled.div`
 `;
 
 const Buttons = styled.div`
+  font-family: "Paperozi";
   width: 520px;
   display: flex;
   flex-direction: column;
@@ -169,6 +241,7 @@ const Buttons = styled.div`
 `;
 
 const Btn = styled.button`
+  font-family: "Paperozi";
   height: 44px;
   border-radius: 12px;
   border: none;
@@ -176,11 +249,13 @@ const Btn = styled.button`
   cursor: pointer;
   background: ${({ primary }) => (primary ? "#fff1a8" : "#eee")};
 `;
+
 const InfoWrapper = styled.div`
   margin-top: 20px;
 `;
+
 const InfoRow = styled.div`
-   margin-top: 16px;   
+  margin-top: 16px;
   margin-bottom: 5px;
   display: flex;
   justify-content: space-between;
@@ -206,9 +281,9 @@ const Percent = styled.div`
 const MatchText = styled.span`
   font-size: 12px;
   font-weight: 500;
-  
 `;
-const TopHeader = styled.div`
+
+const TopHeader = styled(Header)`
   position: absolute;
   top: 30px;
   left: 40px;
@@ -216,12 +291,22 @@ const TopHeader = styled.div`
   align-items: center;
   gap: 12px;
   z-index: 10;
+
+  .header__logo {
+    width: 50px;
+  }
+
+  .header__title {
+    font-size: 30px;
+    font-weight: bold;
+  }
 `;
+
 const Highlight = styled.span`
   font-weight: 800;
   font-size: 16px;
 `;
-/* ===== Component ===== */
+
 export default function FriendResult() {
   const [result, setResult] = useState(null);
 
@@ -248,10 +333,7 @@ export default function FriendResult() {
   return (
     <>
       <GlobalStyle />
-      <TopHeader>
-        <Logo><img src={logo} alt="logo"/></Logo>
-        <LogoTitle>빌려온 사주</LogoTitle>
-      </TopHeader>
+      <TopHeader logoSrc={logo} title="빌려온 사주" showSettings={false} />
       <Page>
         <CardWrap>
           <Big3 />
@@ -275,17 +357,17 @@ export default function FriendResult() {
             <MidCloud>
               <div>나와 비슷한 사주를 가진 학생</div>
               <InfoWrapper>
-               <InfoRow>
+                <InfoRow>
                   <NameBirth>
                     <b>{result.similar.name}</b>
                     <div>{result.similar.birth}</div>
                   </NameBirth>
                   <Percent>
-                    {result.similar.percent}%
-                    <MatchText>일치</MatchText>
+                    {result.similar.percent}%<MatchText>일치</MatchText>
                   </Percent>
                 </InfoRow>
               </InfoWrapper>
+
               <SajuGrid>
                 {[
                   { label: "시주", key: "si" },
@@ -298,7 +380,11 @@ export default function FriendResult() {
                     <SajuCol key={key}>
                       <SajuTitle>{label}</SajuTitle>
                       <SajuCard>
-                        {v.sky ? <Sky red={key !== "wol"}>{v.sky}</Sky> : <EmptyCircle />}
+                        {v.sky ? (
+                          <Sky red={key !== "wol"}>{v.sky}</Sky>
+                        ) : (
+                          <EmptyCircle />
+                        )}
                         {v.earth ? <Earth>{v.earth}</Earth> : <EmptyCircle />}
                       </SajuCard>
                     </SajuCol>

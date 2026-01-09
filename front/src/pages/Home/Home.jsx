@@ -20,19 +20,22 @@ const FEATURE_META = [
   {
     id: "future-partner",
     title: "AI로 미래의 배우자 그려주기",
-    to: "/future-partner",
+    to: "/information",
+    state: { type: 1 },
     imageUrl: Card1,
   },
   {
     id: "similar-friend",
     title: "유사 사주 친구 찾기",
-    to: "/similar-friend",
+    to: "/information",
+    state: { type: 2 },
     imageUrl: Card2,
   },
   {
     id: "compat-score",
     title: "사주 궁합 점수 보기",
-    to: "/compat",
+    state: { type: 3 },
+    to: "/information",
     imageUrl: Card3,
   },
   {
