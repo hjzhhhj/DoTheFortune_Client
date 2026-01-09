@@ -4,6 +4,7 @@ import styles from "./MyPage.module.css";
 
 import Logo from "../../assets/Logo.svg";
 import ResultCard from "../../components/mypage/result";
+import Header from "../../components/Header";
 
 const TABS = [
   { key: "all", label: "전체" },
@@ -69,29 +70,17 @@ export default function MyPage() {
   return (
     <div className={styles.page}>
       {/* 상단 바 */}
-      <header className={styles.topBar}>
-        <div className={styles.brand}>
-          <img className={styles.logo} src={Logo} alt="logo" />
-          <div className={styles.brandTitle}>빌려온 사주</div>
-        </div>
-
-        <button className={styles.iconButton} aria-label="settings">
-          {/* 간단한 기어 아이콘(svg) */}
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <path
-              d="M19.4 15a8.3 8.3 0 0 0 .1-1 8.3 8.3 0 0 0-.1-1l2-1.6-1.9-3.3-2.4 1a8 8 0 0 0-1.7-1l-.4-2.6H10l-.4 2.6a8 8 0 0 0-1.7 1l-2.4-1-1.9 3.3 2 1.6a8.3 8.3 0 0 0-.1 1c0 .3 0 .7.1 1l-2 1.6 1.9 3.3 2.4-1c.5.4 1.1.7 1.7 1l.4 2.6h4l.4-2.6c.6-.3 1.2-.6 1.7-1l2.4 1 1.9-3.3-2-1.6Z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </header>
+      <Header
+        logoSrc={Logo}
+        title="빌려온 사주"
+        classes={{
+          topBar: styles.topBar,
+          brand: styles.brand,
+          logo: styles.logo,
+          brandTitle: styles.brandTitle,
+          iconButton: styles.iconButton,
+        }}
+      />
 
       {/* 프로필 카드 */}
       <section className={styles.profileWrap}>
