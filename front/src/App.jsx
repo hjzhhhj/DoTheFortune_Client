@@ -7,8 +7,8 @@ import MyPage from "./pages/MyPage/MyPage";
 import Home from "./pages/Home/Home";
 import SplashScreen from "./pages/SplashScreen/SplashScreen";
 import CompatibilityResult from "./pages/result/CompatibilityResult";
-import FriendResult from "./pages/friendResult";
 import SpousePage from "./pages/spousePage";
+import FriendResult from "./pages/friendResult";
 
 export default function App() {
   return (
@@ -22,8 +22,11 @@ export default function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/home" element={<Home />} />
         <Route path="/result" element={<CompatibilityResult />} />
-        <Route path="/friend-result" element={<FriendResult />} />
-        <Route path="/spouse-result" element={<SpousePage />} />
+        {/* Home.jsx에서 사용하는 경로들 */}
+        <Route path="/future-partner" element={<SpousePage />} />
+        <Route path="/similar-friend" element={<FriendResult />} />
+        <Route path="/compat" element={<Navigate to="/information?type=3" replace />} />
+        <Route path="/today" element={<Home />} />
       </Routes>
   );
 }
