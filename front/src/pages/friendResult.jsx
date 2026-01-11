@@ -1,111 +1,43 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
+import Header from "../components/Header";
+import { getSimilarUserMatches, getFortuneInfo, createRecord } from "../utils/api";
 
 import cloud from "../assets/cloud.png";
 import darkCloud from "../assets/darkCloud.png";
 import smallCloud from "../assets/smallDarkCloud.png";
-import logo from "../assets/logo.svg";
-import Header from "../components/Header";
+import logo from '../assets/logo.svg';
 
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-1Thin.woff2")
-      format("woff2");
-    font-weight: 100;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-2ExtraLight.woff2")
-      format("woff2");
-    font-weight: 200;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-3Light.woff2")
-      format("woff2");
-    font-weight: 300;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2")
-      format("woff2");
-    font-weight: 400;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-5Medium.woff2")
-      format("woff2");
-    font-weight: 500;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-6SemiBold.woff2")
-      format("woff2");
-    font-weight: 600;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2")
-      format("woff2");
-    font-weight: 700;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2")
-      format("woff2");
-    font-weight: 800;
-    font-display: swap;
-  }
-
-  @font-face {
-    font-family: "Paperozi";
-    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-9Black.woff2")
-      format("woff2");
-    font-weight: 900;
-    font-display: swap;
-  }
+  
   body {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
     margin: 0;
     padding: 0;
     background-color: #fff9d7;
-    font-family: "Paperozi";
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto;
     align-items: center;
     display: flex;
     justify-content: center;
     background-size: cover;
+    
   }
-
-  #root {
-    min-height: 100vh;
+    #root {
+    min-height: 100vh; 
   }
 `;
-
 const Page = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 80px;
-  min-height: 100vh;
-  background: #fff9d7;
-  padding-bottom: 100px;
-  box-sizing: border-box;
-`;
+  min-height: 100vh;      
+  background: #fff9d7;   
+  padding-bottom: 100px;  
+  box-sizing: border-box; 
+  `;
+
 
 const CardWrap = styled.div`
   position: relative;
@@ -123,18 +55,9 @@ const BigCloud = styled.div`
   background: url(${cloud}) no-repeat center / contain;
 `;
 
-const Big1 = styled(BigCloud)`
-  top: -100px;
-  z-index: 3;
-`;
-const Big2 = styled(BigCloud)`
-  top: 175px;
-  z-index: 2;
-`;
-const Big3 = styled(BigCloud)`
-  top: 350px;
-  z-index: 1;
-`;
+const Big1 = styled(BigCloud)`top: -100px; z-index: 3;`;
+const Big2 = styled(BigCloud)`top: 175px; z-index: 2;`;
+const Big3 = styled(BigCloud)`top: 350px; z-index: 1;`;
 
 const Content = styled.div`
   position: absolute;
@@ -233,7 +156,6 @@ const EmptyCircle = styled.div`
 `;
 
 const Buttons = styled.div`
-  font-family: "Paperozi";
   width: 520px;
   display: flex;
   flex-direction: column;
@@ -241,7 +163,6 @@ const Buttons = styled.div`
 `;
 
 const Btn = styled.button`
-  font-family: "Paperozi";
   height: 44px;
   border-radius: 12px;
   border: none;
@@ -249,13 +170,11 @@ const Btn = styled.button`
   cursor: pointer;
   background: ${({ primary }) => (primary ? "#fff1a8" : "#eee")};
 `;
-
 const InfoWrapper = styled.div`
   margin-top: 20px;
 `;
-
 const InfoRow = styled.div`
-  margin-top: 16px;
+   margin-top: 16px;   
   margin-bottom: 5px;
   display: flex;
   justify-content: space-between;
@@ -281,59 +200,161 @@ const Percent = styled.div`
 const MatchText = styled.span`
   font-size: 12px;
   font-weight: 500;
+  
 `;
-
-const TopHeader = styled(Header)`
+const HeaderWrapper = styled.div`
   position: absolute;
   top: 30px;
   left: 40px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
   z-index: 10;
-
-  .header__logo {
-    width: 50px;
-  }
-
-  .header__title {
-    font-size: 30px;
-    font-weight: bold;
+  
+  .topBar,
+  .header__topBar {
+    margin-bottom: 0;
   }
 `;
-
 const Highlight = styled.span`
   font-weight: 800;
   font-size: 16px;
 `;
-
+/* ===== Component ===== */
 export default function FriendResult() {
+  const navigate = useNavigate();
   const [result, setResult] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    setResult({
-      bestMatch: "이함한해",
-      worstMatch: "기태연",
-      similar: {
-        name: "윤성연",
-        birth: "2008.01.21",
-        percent: 94,
-      },
-      saju: {
-        si: { sky: null, earth: null },
-        il: { sky: "甲", earth: "子" },
-        wol: { sky: "己", earth: "亥" },
-        nyeon: { sky: "丙", earth: "子" },
-      },
-    });
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        // 유사 사주 친구 매칭 결과 가져오기
+        const matchesData = await getSimilarUserMatches();
+        
+        // 내 사주 정보 가져오기
+        const myFortuneInfo = await getFortuneInfo();
+
+        // 데이터 변환
+        const similarUser = matchesData.similar_user;
+        const bestMatch = matchesData.best_match;
+        const worstMatch = matchesData.worst_match;
+
+        // 생년월일 포맷팅 함수
+        const formatBirthDate = (user) => {
+          if (!user || !user.fortune_info) return "";
+          const { birth_year, birth_month, birth_day } = user.fortune_info;
+          return `${birth_year}.${String(birth_month).padStart(2, "0")}.${String(birth_day).padStart(2, "0")}`;
+        };
+
+        // 사주 정보 파싱 함수
+        const parseSaju = (fortuneInfo) => {
+          if (!fortuneInfo) {
+            return {
+              si: { sky: null, earth: null },
+              il: { sky: null, earth: null },
+              wol: { sky: null, earth: null },
+              nyeon: { sky: null, earth: null },
+            };
+          }
+          return {
+            si: {
+              sky: fortuneInfo.hour_heavenly_stem || null,
+              earth: fortuneInfo.hour_earthly_branch || null,
+            },
+            il: {
+              sky: fortuneInfo.day_heavenly_stem || null,
+              earth: fortuneInfo.day_earthly_branch || null,
+            },
+            wol: {
+              sky: fortuneInfo.month_heavenly_stem || null,
+              earth: fortuneInfo.month_earthly_branch || null,
+            },
+            nyeon: {
+              sky: fortuneInfo.year_heavenly_stem || null,
+              earth: fortuneInfo.year_earthly_branch || null,
+            },
+          };
+        };
+
+        setResult({
+          bestMatch: bestMatch?.user?.name || "없음",
+          worstMatch: worstMatch?.user?.name || "없음",
+          similar: similarUser
+            ? {
+                name: similarUser.user?.name || "없음",
+                birth: formatBirthDate(similarUser.user),
+                percent: Math.round(similarUser.score || 0),
+              }
+            : {
+                name: "없음",
+                birth: "",
+                percent: 0,
+              },
+          saju: parseSaju(similarUser?.user?.fortune_info || myFortuneInfo),
+        });
+      } catch (err) {
+        console.error("데이터 가져오기 실패:", err);
+        setError(err.message || "데이터를 불러오는데 실패했습니다.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, []);
 
-  if (!result) return null;
+  if (loading) {
+    return (
+      <>
+        <GlobalStyle />
+        <HeaderWrapper>
+          <Header
+            logoSrc={logo}
+            title="빌려온 사주"
+            onLogoClick={() => navigate("/home")}
+          />
+        </HeaderWrapper>
+        <Page>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+            <div>유사 사주 친구를 찾는 중...</div>
+          </div>
+        </Page>
+      </>
+    );
+  }
+
+  if (error || !result) {
+    return (
+      <>
+        <GlobalStyle />
+        <HeaderWrapper>
+          <Header
+            logoSrc={logo}
+            title="빌려온 사주"
+            onLogoClick={() => navigate("/home")}
+          />
+        </HeaderWrapper>
+        <Page>
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", color: "red" }}>
+            <div>{error || "데이터를 불러올 수 없습니다."}</div>
+          </div>
+        </Page>
+      </>
+    );
+  }
 
   return (
     <>
       <GlobalStyle />
-      <TopHeader logoSrc={logo} title="빌려온 사주" showSettings={false} />
+      <HeaderWrapper>
+        <Header
+          logoSrc={logo}
+          title="빌려온 사주"
+          onLogoClick={() => navigate("/home")}
+        />
+      </HeaderWrapper>
       <Page>
         <CardWrap>
           <Big3 />
@@ -357,17 +378,17 @@ export default function FriendResult() {
             <MidCloud>
               <div>나와 비슷한 사주를 가진 학생</div>
               <InfoWrapper>
-                <InfoRow>
+               <InfoRow>
                   <NameBirth>
                     <b>{result.similar.name}</b>
                     <div>{result.similar.birth}</div>
                   </NameBirth>
                   <Percent>
-                    {result.similar.percent}%<MatchText>일치</MatchText>
+                    {result.similar.percent}%
+                    <MatchText>일치</MatchText>
                   </Percent>
                 </InfoRow>
               </InfoWrapper>
-
               <SajuGrid>
                 {[
                   { label: "시주", key: "si" },
@@ -380,11 +401,7 @@ export default function FriendResult() {
                     <SajuCol key={key}>
                       <SajuTitle>{label}</SajuTitle>
                       <SajuCard>
-                        {v.sky ? (
-                          <Sky red={key !== "wol"}>{v.sky}</Sky>
-                        ) : (
-                          <EmptyCircle />
-                        )}
+                        {v.sky ? <Sky red={key !== "wol"}>{v.sky}</Sky> : <EmptyCircle />}
                         {v.earth ? <Earth>{v.earth}</Earth> : <EmptyCircle />}
                       </SajuCard>
                     </SajuCol>
@@ -394,7 +411,33 @@ export default function FriendResult() {
             </MidCloud>
 
             <Buttons>
-              <Btn primary>관계 저장하기</Btn>
+              <Btn 
+                primary 
+                onClick={async () => {
+                  if (!result) return;
+                  
+                  try {
+                    const content = `유사 사주 친구 찾기 결과\n비슷한 사주: ${result.similar.name} (${result.similar.percent}% 일치)\n잘 맞는 학생: ${result.bestMatch}\n안 맞는 학생: ${result.worstMatch}`;
+                    const metadata = JSON.stringify({
+                      similar_user: result.similar.name,
+                      similar_score: result.similar.percent,
+                      best_match: result.bestMatch,
+                      worst_match: result.worstMatch,
+                    });
+                    await createRecord({
+                      type: "similar_friend",
+                      content: content,
+                      metadata: metadata,
+                    });
+                    alert("저장이 완료되었습니다! ✅");
+                  } catch (err) {
+                    console.error("저장 실패:", err);
+                    alert(err.message || "저장 중 오류가 발생했습니다.");
+                  }
+                }}
+              >
+                관계 저장하기
+              </Btn>
               <Btn>결과 공유하기</Btn>
             </Buttons>
           </Content>
