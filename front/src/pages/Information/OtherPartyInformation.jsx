@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthFrame from "../../components/auth/AuthFrame";
@@ -6,12 +6,31 @@ import "./OtherPartyInformation.css";
 import Goback from "../../components/goback";
 import Loading from "../../components/loading/Loading";
 import LoadingSuccess from "../../components/loading/LoadingSuccess";
+import { calculateCompatibility, saveUserInfo, registerTempUser, getCurrentUserId, getFortuneInfo } from "../../utils/api";
 
 export default function OtherPartyInformation() {
   const navigate = useNavigate();
   const location = useLocation();
 
   const myInfo = location?.state?.myInfo || null;
+  const [myFortuneInfo, setMyFortuneInfo] = useState(null);
+
+  // 저장된 내 정보 가져오기 (myInfo가 null인 경우)
+  useEffect(() => {
+    if (myInfo === null) {
+      const fetchMyInfo = async () => {
+        try {
+          const fortuneInfo = await getFortuneInfo();
+          setMyFortuneInfo(fortuneInfo);
+        } catch (err) {
+          console.error("내 정보 조회 실패:", err);
+          // 정보가 없으면 정보 입력 페이지로 리다이렉트
+          navigate("/information", { state: { type: 3 } });
+        }
+      };
+      fetchMyInfo();
+    }
+  }, [myInfo, navigate]);
 
   // 로딩 오버레이 (궁합 계산)
   const [isLoading, setIsLoading] = useState(false);
@@ -65,20 +84,79 @@ export default function OtherPartyInformation() {
     setIsLoading(true);
 
     try {
-      // TODO: 궁합 계산 API 연결
-      // 현재는 연결 전이므로 콘솔로만 확인
-      console.log("MY_INFO:", myInfo);
-      console.log("OTHER_INFO:", form);
+      // 상대방 정보 파싱
+      const [birthYear, birthMonth, birthDay] = form.birthDate.split("-").map(Number);
+      const [birthHour, birthMinute] = form.birthTime.split(":").map(Number);
+      const gender = form.gender === "male" ? "M" : "F";
 
-      // 서버 연결 전까지는 로딩 UI 확인용으로 짧게 지연
-      await new Promise((r) => setTimeout(r, 1200));
+      // 임시 사용자 이메일 생성 (타임스탬프 기반으로 고유성 보장)
+      const tempEmail = `temp_${Date.now()}_${Math.random().toString(36).substr(2, 9)}@temp.com`;
 
-      // 계산 완료 후 Success 오버레이 표시 (임시)
-      setIsSuccessOpen(true);
+      // 상대방 정보로 임시 사용자 등록 (사주 정보도 함께 생성됨)
+      const tempUserData = {
+        email: tempEmail,
+        password: "temp123456", // 임시 비밀번호
+        name: form.userName || "상대방",
+        gender: gender,
+        birth_year: birthYear,
+        birth_month: birthMonth,
+        birth_day: birthDay,
+        birth_hour: birthHour,
+        birth_minute: birthMinute,
+        birth_place: form.birthCity || "서울",
+        is_lunar: form.calendar === "lunar",
+      };
+
+      console.log("임시 사용자 등록 중...", tempUserData);
+      const tempUserResponse = await registerTempUser(tempUserData);
+      
+      // 임시 사용자의 ID 가져오기
+      const tempUserId = tempUserResponse.user?.id || tempUserResponse.id;
+      
+      if (!tempUserId) {
+        throw new Error("임시 사용자 등록에 실패했습니다.");
+      }
+
+      console.log("임시 사용자 ID:", tempUserId);
+
+      // 궁합 계산 API 호출
+      console.log("궁합 계산 중...");
+      const compatibilityResult = await calculateCompatibility(tempUserId);
+      
+      console.log("궁합 결과:", compatibilityResult);
+
+      // 내 정보 준비 (myInfo가 있으면 그것을, 없으면 저장된 정보 사용)
+      let finalMyInfo = myInfo;
+      if (!finalMyInfo && myFortuneInfo) {
+        // 저장된 정보를 myInfo 형식으로 변환
+        finalMyInfo = {
+          userName: localStorage.getItem("name") || "나",
+          gender: myFortuneInfo.user?.gender === "M" ? "male" : "female",
+          calendar: myFortuneInfo.is_lunar ? "lunar" : "solar",
+          birthDate: `${myFortuneInfo.birth_year}-${String(myFortuneInfo.birth_month).padStart(2, "0")}-${String(myFortuneInfo.birth_day).padStart(2, "0")}`,
+          birthTime: `${String(myFortuneInfo.birth_hour || 0).padStart(2, "0")}:${String(myFortuneInfo.birth_minute || 0).padStart(2, "0")}`,
+          birthCity: myFortuneInfo.birth_place || "",
+        };
+      }
+
+      // 궁합 결과 페이지로 이동
+      navigate("/result", {
+        state: {
+          compatibility: compatibilityResult,
+          myInfo: finalMyInfo,
+          otherInfo: {
+            userName: form.userName || "상대방",
+            gender: form.gender,
+            calendar: form.calendar,
+            birthDate: form.birthDate,
+            birthTime: form.birthTime,
+            birthCity: form.birthCity,
+          },
+        },
+      });
     } catch (err) {
       console.error(err);
-      alert("궁합 계산 중 오류가 발생했습니다. 다시 시도해 주세요.");
-    } finally {
+      alert(err.message || "궁합 계산 중 오류가 발생했습니다. 다시 시도해 주세요.");
       setIsLoading(false);
     }
   };
@@ -180,13 +258,7 @@ export default function OtherPartyInformation() {
 
       {/* ✅ 상대방 정보까지 입력 완료 후 궁합 계산 로딩 */}
       <Loading open={isLoading} title={loadingTitle} desc={loadingDesc} />
-      <LoadingSuccess
-        open={isSuccessOpen}
-        title={successTitle}
-        desc={successDesc}
-        actionText={successActionText}
-        onAction={() => navigate("/home")}
-      />
+      {/* Success 오버레이는 navigate로 이동하므로 여기서는 사용하지 않음 */}
     </AuthLayout>
   );
 }
