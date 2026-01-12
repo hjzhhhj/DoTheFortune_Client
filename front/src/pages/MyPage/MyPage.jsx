@@ -330,7 +330,7 @@ export default function MyPage() {
           </div>
 
           <div className={styles.recordsContent}>
-            <h2 className={styles.sectionTitle}>최근 본 운세 기록</h2>
+            <h2 className={styles.sectionTitle}>저장한 사주 기록git config --global --list</h2>
 
             {/* ✅ 탭 바: 알약은 1개만 두고, 위치/폭만 애니메이션 */}
             <div className={styles.tabs} ref={tabsRef}>
