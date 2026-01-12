@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "../components/Header";
 import { getSimilarUserMatches, getFortuneInfo, createRecord } from "../utils/api";
+import { captureAndDownload } from "../utils/screenshot";
 
 import cloud from "../assets/cloud.png";
 import darkCloud from "../assets/darkCloud.png";
@@ -223,6 +224,7 @@ export default function FriendResult() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const cardWrapRef = useRef(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -356,7 +358,7 @@ export default function FriendResult() {
         />
       </HeaderWrapper>
       <Page>
-        <CardWrap>
+        <CardWrap ref={cardWrapRef}>
           <Big3 />
           <Big2 />
           <Big1 />
@@ -439,8 +441,18 @@ export default function FriendResult() {
                 관계 저장하기
               </Btn>
               <Btn 
-                onClick={() => {
-                  alert("링크 생성 기능은 추후 개발 예정입니다.");
+                onClick={async () => {
+                  try {
+                    if (!cardWrapRef.current) {
+                      alert("공유할 내용을 찾을 수 없습니다.");
+                      return;
+                    }
+                    await captureAndDownload(cardWrapRef.current, "유사사주친구결과");
+                    alert("이미지가 저장되었습니다! 📸");
+                  } catch (err) {
+                    console.error("캡처 실패:", err);
+                    alert("이미지 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+                  }
                 }}
               >
                 결과 공유하기

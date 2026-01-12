@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled, { createGlobalStyle } from 'styled-components';
 import logo from '../assets/logo.svg';
 import { createRecord, getSpouseImage } from '../utils/api';
+import { captureAndDownload } from '../utils/screenshot';
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -224,6 +225,7 @@ export default function SpousePage() {
   const [spouseData, setSpouseData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const contentCardRef = useRef(null);
 
   useEffect(() => {
     const fetchSpouseData = async () => {
@@ -290,8 +292,18 @@ export default function SpousePage() {
     }
   };
 
-  const handleShare = () => {
-    alert("링크 생성 기능은 추후 개발 예정입니다.");
+  const handleShare = async () => {
+    try {
+      if (!contentCardRef.current) {
+        alert("공유할 내용을 찾을 수 없습니다.");
+        return;
+      }
+      await captureAndDownload(contentCardRef.current, "미래배우자결과");
+      alert("이미지가 저장되었습니다! 📸");
+    } catch (err) {
+      console.error("캡처 실패:", err);
+      alert("이미지 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    }
   };
 
   if (loading) {
@@ -324,7 +336,7 @@ export default function SpousePage() {
           <Title onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>빌려온 사주</Title>
         </TopHeader>
 
-        <ContentCard>
+        <ContentCard ref={contentCardRef}>
           <TextGroup>
             <MainTitle>나의 미래 배우자는?</MainTitle>
             <Subtitle>실제 인물을 예측하는 것이 아니며, 사주 성향을 바탕으로 시각화한 이미지입니다.</Subtitle>

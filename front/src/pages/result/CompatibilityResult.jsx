@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./CompatibilityResult.css";
 import Logo from "../../assets/Logo.svg";
 import { createRecord } from "../../utils/api";
+import { captureAndDownload } from "../../utils/screenshot";
 
 // Figma: 궁합결과 화면 구현
 export default function CompatibilityResult() {
   const location = useLocation();
   const navigate = useNavigate();
-  
+
   // location state에서 궁합 결과 데이터 받기
   const compatibility = location?.state?.compatibility || null;
   const myInfo = location?.state?.myInfo || null;
@@ -17,7 +18,7 @@ export default function CompatibilityResult() {
   // 기본값 (데이터가 없을 경우)
   const user1Name = myInfo?.userName ? `${myInfo.userName}님` : "희진님";
   const user2Name = otherInfo?.userName ? `${otherInfo.userName}님` : "성연님";
-  
+
   // 사용자 정보 포맷팅
   const formatUserInfo = (info) => {
     if (!info) return "성별 : 여자\n생년월일 : 2009.01.20";
@@ -25,7 +26,7 @@ export default function CompatibilityResult() {
     const birthDate = info.birthDate || "2009.01.20";
     return `성별 : ${gender}\n생년월일 : ${birthDate.replace(/-/g, ".")}`;
   };
-  
+
   const user1Info = formatUserInfo(myInfo);
   const user2Info = formatUserInfo(otherInfo);
 
@@ -33,24 +34,38 @@ export default function CompatibilityResult() {
   const resultSections = compatibility
     ? [
         {
-          title: `두 사람의 궁합 점수 : ${Math.round(compatibility.score || 0)}점`,
+          title: `두 사람의 궁합 점수 : ${Math.round(
+            compatibility.score || 0
+          )}점`,
           body: compatibility.analysis || "",
         },
         {
           title: "🗣️ 대화 방식",
-          body: compatibility.communication_analysis || compatibility.CommunicationAnalysis || "",
+          body:
+            compatibility.communication_analysis ||
+            compatibility.CommunicationAnalysis ||
+            "",
         },
         {
           title: "💖 감정·성격",
-          body: compatibility.emotion_analysis || compatibility.EmotionAnalysis || "",
+          body:
+            compatibility.emotion_analysis ||
+            compatibility.EmotionAnalysis ||
+            "",
         },
         {
           title: "🏠 목표·생활 방식",
-          body: compatibility.lifestyle_analysis || compatibility.LifestyleAnalysis || "",
+          body:
+            compatibility.lifestyle_analysis ||
+            compatibility.LifestyleAnalysis ||
+            "",
         },
         {
           title: "⚡ 주의할 점",
-          body: compatibility.caution_analysis || compatibility.CautionAnalysis || "",
+          body:
+            compatibility.caution_analysis ||
+            compatibility.CautionAnalysis ||
+            "",
         },
       ]
     : [
@@ -79,6 +94,7 @@ export default function CompatibilityResult() {
 
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const contentRef = useRef(null);
 
   const handleSave = async () => {
     if (saving || saved) return;
@@ -96,24 +112,42 @@ export default function CompatibilityResult() {
 
     try {
       setSaving(true);
-      
+
       // 궁합 결과 내용 구성
       const score = compatibility?.score || 0;
-      const content = `두 사람의 궁합 점수: ${Math.round(score)}점\n${user1Name}과 ${user2Name}의 궁합 결과`;
-      
+      const content = `두 사람의 궁합 점수: ${Math.round(
+        score
+      )}점\n${user1Name}과 ${user2Name}의 궁합 결과`;
+
       // 메타데이터 구성
       const metadata = JSON.stringify({
         user1_name: myInfo?.userName || "",
         user2_name: otherInfo?.userName || "",
         score: score,
         analysis: compatibility?.analysis || "",
-        communication_analysis: compatibility?.communication_analysis || compatibility?.CommunicationAnalysis || "",
-        emotion_analysis: compatibility?.emotion_analysis || compatibility?.EmotionAnalysis || "",
-        lifestyle_analysis: compatibility?.lifestyle_analysis || compatibility?.LifestyleAnalysis || "",
-        caution_analysis: compatibility?.caution_analysis || compatibility?.CautionAnalysis || "",
+        communication_analysis:
+          compatibility?.communication_analysis ||
+          compatibility?.CommunicationAnalysis ||
+          "",
+        emotion_analysis:
+          compatibility?.emotion_analysis ||
+          compatibility?.EmotionAnalysis ||
+          "",
+        lifestyle_analysis:
+          compatibility?.lifestyle_analysis ||
+          compatibility?.LifestyleAnalysis ||
+          "",
+        caution_analysis:
+          compatibility?.caution_analysis ||
+          compatibility?.CautionAnalysis ||
+          "",
       });
 
-      console.log("저장 요청 데이터:", { type: "compatibility", content, metadata });
+      console.log("저장 요청 데이터:", {
+        type: "compatibility",
+        content,
+        metadata,
+      });
 
       const result = await createRecord({
         type: "compatibility",
@@ -127,14 +161,27 @@ export default function CompatibilityResult() {
     } catch (err) {
       console.error("저장 실패 상세:", err);
       console.error("에러 스택:", err.stack);
-      const errorMessage = err.message || err.toString() || "저장 중 오류가 발생했습니다. 다시 시도해 주세요.";
+      const errorMessage =
+        err.message ||
+        err.toString() ||
+        "저장 중 오류가 발생했습니다. 다시 시도해 주세요.";
       alert(`저장 실패: ${errorMessage}`);
       setSaving(false);
     }
   };
 
-  const handleShare = () => {
-    alert("링크 생성 기능은 추후 개발 예정입니다.");
+  const handleShare = async () => {
+    try {
+      if (!contentRef.current) {
+        alert("공유할 내용을 찾을 수 없습니다.");
+        return;
+      }
+      await captureAndDownload(contentRef.current, "궁합결과");
+      alert("이미지가 저장되었습니다! 📸");
+    } catch (err) {
+      console.error("캡처 실패:", err);
+      alert("이미지 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+    }
   };
 
   return (
@@ -178,8 +225,15 @@ export default function CompatibilityResult() {
                     type="matrix"
                     values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
                   />
-                  <feBlend in2="BackgroundImageFix" result="effect1_dropShadow" />
-                  <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+                  <feBlend
+                    in2="BackgroundImageFix"
+                    result="effect1_dropShadow"
+                  />
+                  <feBlend
+                    in="SourceGraphic"
+                    in2="effect1_dropShadow"
+                    result="shape"
+                  />
                 </filter>
               </defs>
             </svg>
@@ -187,13 +241,27 @@ export default function CompatibilityResult() {
         ))}
       </div>
 
-      <div className="compat-content">
+      <div className="compat-content" ref={contentRef}>
         {/* 헤더 */}
         <header className="compat-header">
-          <div className="compat-logo-wrap" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
-            <img src={Logo} alt="빌려온 사주 로고" className="compat-logo-img" />
+          <div
+            className="compat-logo-wrap"
+            onClick={() => navigate("/home")}
+            style={{ cursor: "pointer" }}
+          >
+            <img
+              src={Logo}
+              alt="빌려온 사주 로고"
+              className="compat-logo-img"
+            />
           </div>
-          <h1 className="compat-header-title" onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>빌려온 사주</h1>
+          <h1
+            className="compat-header-title"
+            onClick={() => navigate("/home")}
+            style={{ cursor: "pointer" }}
+          >
+            빌려온 사주
+          </h1>
         </header>
 
         <main className="compat-main">
@@ -285,8 +353,15 @@ export default function CompatibilityResult() {
                         type="matrix"
                         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
                       />
-                      <feBlend in2="BackgroundImageFix" result="effect1_dropShadow" />
-                      <feBlend in="SourceGraphic" in2="effect1_dropShadow" result="shape" />
+                      <feBlend
+                        in2="BackgroundImageFix"
+                        result="effect1_dropShadow"
+                      />
+                      <feBlend
+                        in="SourceGraphic"
+                        in2="effect1_dropShadow"
+                        result="shape"
+                      />
                     </filter>
                   </defs>
                 </svg>
@@ -301,15 +376,19 @@ export default function CompatibilityResult() {
 
           {/* 하단 버튼 두 개 */}
           <div className="compat-actions">
-            <button 
-              className="compat-action-btn" 
-              type="button" 
+            <button
+              className="compat-action-btn"
+              type="button"
               onClick={handleSave}
               disabled={saving || saved}
             >
               {saving ? "저장 중..." : saved ? "저장 완료 ✅" : "정보 저장하기"}
             </button>
-            <button className="compat-action-btn" type="button" onClick={handleShare}>
+            <button
+              className="compat-action-btn"
+              type="button"
+              onClick={handleShare}
+            >
               결과 공유하기
             </button>
           </div>
@@ -318,4 +397,3 @@ export default function CompatibilityResult() {
     </div>
   );
 }
-
