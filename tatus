@@ -1,0 +1,10 @@
+user.name=imdhxxk
+user.email=barinlim77@gmail.com
+safe.directory=D:/MIVEN/pre
+safe.directory=E:/MIVEN
+safe.directory=E:/MIVEN/pre
+core.autocrlf=true
+difftool.sourcetree.cmd='' 
+mergetool.sourcetree.cmd='' 
+mergetool.sourcetree.trustexitcode=false
+mergetool.sourcetree.keepbackup=false
