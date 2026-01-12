@@ -1,11 +1,23 @@
-import React, { useLayoutEffect, useMemo, useRef, useState, useEffect } from "react";
+import React, {
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+  useEffect,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import styles from "./MyPage.module.css";
-import { getMe, logout as apiLogout, getFortuneInfo, getRecentRecords } from "../../utils/api";
+import {
+  getMe,
+  logout as apiLogout,
+  getFortuneInfo,
+  getRecentRecords,
+} from "../../utils/api";
 import { removeToken } from "../../utils/api";
 
 import Logo from "../../assets/Logo.svg";
+import ProfileIcon from "../../assets/profile.svg";
 import ResultCard from "../../components/mypage/result";
 
 const TABS = [
@@ -35,11 +47,11 @@ export default function MyPage() {
     const loadData = async () => {
       try {
         setLoading(true);
-        
+
         // localStorage에서 사용자 정보 가져오기
         const name = localStorage.getItem("name") || "";
         const email = localStorage.getItem("email") || "";
-        
+
         setUserInfo({ name, email });
 
         // 최근 기록 가져오기 (6개로 제한)
@@ -47,71 +59,88 @@ export default function MyPage() {
           const recordsData = await getRecentRecords(6);
           if (recordsData && recordsData.records) {
             // 타입 변환: backend 타입 -> frontend 타입
-            const formattedRecords = recordsData.records.map((record) => {
-              let type = "all";
-              if (record.type === "compatibility") {
-                type = "compat";
-              } else if (record.type === "ai_spouse") {
-                type = "future";
-              } else if (record.type === "today_fortune") {
-                type = "relation";
-              }
-              
-              // metadata 파싱 (JSON 문자열일 수 있음)
-              let metadata = null;
-              if (record.metadata) {
-                try {
-                  metadata = typeof record.metadata === 'string' 
-                    ? JSON.parse(record.metadata) 
-                    : record.metadata;
-                } catch (e) {
-                  console.error("metadata 파싱 실패:", e);
+            const formattedRecords = recordsData.records
+              .map((record) => {
+                let type = "all";
+                if (record.type === "compatibility") {
+                  type = "compat";
+                } else if (record.type === "ai_spouse") {
+                  type = "future";
+                } else if (record.type === "today_fortune") {
+                  type = "relation";
                 }
-              }
-              
-              // 궁합 결과의 경우 더 자세한 제목 생성
-              // 상대방 이름이 "상대방"이면 필터링 (null 또는 undefined도 체크)
-              if (record.type === "compatibility" && metadata) {
-                const user2Name = metadata.user2_name || "";
-                if (!user2Name || user2Name.trim() === "" || user2Name === "상대방") {
-                  // 상대방 이름이 없거나 "상대방"이면 이 기록을 제외
-                  return null;
+
+                // metadata 파싱 (JSON 문자열일 수 있음)
+                let metadata = null;
+                if (record.metadata) {
+                  try {
+                    metadata =
+                      typeof record.metadata === "string"
+                        ? JSON.parse(record.metadata)
+                        : record.metadata;
+                  } catch (e) {
+                    console.error("metadata 파싱 실패:", e);
+                  }
                 }
-              }
-              
-              let title = "기록";
-              if (record.type === "compatibility" && metadata) {
-                const score = metadata.score ? Math.round(metadata.score) : "";
-                const user2Name = metadata.user2_name || "";
-                if (score && user2Name) {
-                  // 이름이 3글자 이상이면 앞 2글자만 사용
-                  const shortName = user2Name.length > 2 ? user2Name.substring(0, 2) : user2Name;
-                  title = `${shortName}님 궁합 ${score}점`;
-                } else if (score) {
-                  title = `궁합 ${score}점`;
+
+                // 궁합 결과의 경우 더 자세한 제목 생성
+                // 상대방 이름이 "상대방"이면 필터링 (null 또는 undefined도 체크)
+                if (record.type === "compatibility" && metadata) {
+                  const user2Name = metadata.user2_name || "";
+                  if (
+                    !user2Name ||
+                    user2Name.trim() === "" ||
+                    user2Name === "상대방"
+                  ) {
+                    // 상대방 이름이 없거나 "상대방"이면 이 기록을 제외
+                    return null;
+                  }
                 }
-              } else if (record.type === "ai_spouse") {
-                title = "나의 미래 배우자";
-              } else if (record.type === "similar_friend" || record.type === "today_fortune") {
-                title = "유사 친구";
-              } else {
-                // content에서 첫 줄만 가져오기 (최대 15자)
-                const content = record.content || "";
-                const firstLine = content.split('\n')[0];
-                title = firstLine.length > 15 ? firstLine.substring(0, 15) + "..." : firstLine;
-              }
-              
-              return {
-                id: record.id,
-                title: title,
-                type: type,
-                createdAt: record.created_at,
-                metadata: metadata,
-                recordType: record.type, // 원본 타입 저장
-                recordData: record, // 전체 기록 데이터 저장
-              };
-            })
-            .filter(record => record !== null); // null인 기록 제거
+
+                let title = "기록";
+                if (record.type === "compatibility" && metadata) {
+                  const score = metadata.score
+                    ? Math.round(metadata.score)
+                    : "";
+                  const user2Name = metadata.user2_name || "";
+                  if (score && user2Name) {
+                    // 이름이 3글자 이상이면 앞 2글자만 사용
+                    const shortName =
+                      user2Name.length > 2
+                        ? user2Name.substring(0, 2)
+                        : user2Name;
+                    title = `${shortName}님 궁합 ${score}점`;
+                  } else if (score) {
+                    title = `궁합 ${score}점`;
+                  }
+                } else if (record.type === "ai_spouse") {
+                  title = "나의 미래 배우자";
+                } else if (
+                  record.type === "similar_friend" ||
+                  record.type === "today_fortune"
+                ) {
+                  title = "유사 친구";
+                } else {
+                  // content에서 첫 줄만 가져오기 (최대 15자)
+                  const content = record.content || "";
+                  const firstLine = content.split("\n")[0];
+                  title =
+                    firstLine.length > 15
+                      ? firstLine.substring(0, 15) + "..."
+                      : firstLine;
+                }
+
+                return {
+                  id: record.id,
+                  title: title,
+                  type: type,
+                  createdAt: record.created_at,
+                  metadata: metadata,
+                  recordType: record.type, // 원본 타입 저장
+                  recordData: record, // 전체 기록 데이터 저장
+                };
+              })
+              .filter((record) => record !== null); // null인 기록 제거
             setRecords(formattedRecords);
           }
         } catch (err) {
@@ -185,37 +214,24 @@ export default function MyPage() {
     <div className={styles.page}>
       {/* 상단 바 */}
       <header className={styles.topBar}>
-        <div 
-          className={styles.brand} 
+        <div
+          className={styles.brand}
           onClick={() => navigate("/home")}
           style={{ cursor: "pointer" }}
         >
           <img className={styles.logo} src={Logo} alt="logo" />
           <div className={styles.brandTitle}>빌려온 사주</div>
         </div>
-
-        <button className={styles.iconButton} aria-label="settings">
-          {/* 간단한 기어 아이콘(svg) */}
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-            <path
-              d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z"
-              stroke="currentColor"
-              strokeWidth="2"
-            />
-            <path
-              d="M19.4 15a8.3 8.3 0 0 0 .1-1 8.3 8.3 0 0 0-.1-1l2-1.6-1.9-3.3-2.4 1a8 8 0 0 0-1.7-1l-.4-2.6H10l-.4 2.6a8 8 0 0 0-1.7 1l-2.4-1-1.9 3.3 2 1.6a8.3 8.3 0 0 0-.1 1c0 .3 0 .7.1 1l-2 1.6 1.9 3.3 2.4-1c.5.4 1.1.7 1.7 1l.4 2.6h4l.4-2.6c.6-.3 1.2-.6 1.7-1l2.4 1 1.9-3.3-2-1.6Z"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
       </header>
 
       {/* 프로필 카드 */}
       <section className={styles.profileWrap}>
         <div className={styles.profileBg} aria-hidden="true">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1744 522" className={styles.svgFull}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1744 522"
+            className={styles.svgFull}
+          >
             <path
               d="M1729.85 203.569C1830.81 466.439 1371.39 556.032 992.944 510.79C614.494 465.548 45.5198 600.913 0 288.156C0 113.423 71.1979 -65.2798 735.51 32.9942C936.959 62.7953 1597.57 -140.817 1729.85 203.569Z"
               fill="white"
@@ -226,15 +242,19 @@ export default function MyPage() {
         <div className={styles.profileContent}>
           <div className={styles.profileComponents}>
             <div className={styles.avatar}>
-              <div className={styles.avatarCircle} />
+              <img src={ProfileIcon} alt="Profile" className={styles.avatarCircle} />
             </div>
 
             <div className={styles.profileText}>
-              <div className={styles.profileName}>{userInfo.name || "사용자"}님</div>
+              <div className={styles.profileName}>
+                {userInfo.name || "사용자"} 님
+              </div>
               <div className={styles.profileEmail}>{userInfo.email || ""}</div>
             </div>
 
-            <button className={styles.logoutBtn} onClick={handleLogout}>로그아웃하기</button>
+            <button className={styles.logoutBtn} onClick={handleLogout}>
+              로그아웃하기
+            </button>
           </div>
         </div>
       </section>
@@ -245,7 +265,11 @@ export default function MyPage() {
           {/* 배경 SVG 스택 (기본 큰 배경 + 추가 배경(겹침)) */}
           <div className={styles.recordsBg} aria-hidden="true">
             <div className={styles.bgStack}>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1752 1454" className={styles.svgFull}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 1752 1454"
+                className={styles.svgFull}
+              >
                 <g filter="url(#filter0_d_178_43)">
                   <path
                     d="M739.51 62.9541C940.959 119.816 1601.57 -268.685 1733.85 388.42C1761.54 525.964 1747.08 638.645 1703.71 727.976C1715.6 760.801 1725.72 797.227 1733.85 837.602C1834.81 1339.17 1375.39 1510.12 996.944 1423.79C618.494 1337.47 49.5198 1595.75 4 998.996C4.00001 900.34 10.2364 801.021 36.2285 714.928C19.9671 668.877 8.92232 614.345 4 549.814C4.00003 216.416 75.1984 -124.557 739.51 62.9541Z"
@@ -276,8 +300,17 @@ export default function MyPage() {
                       type="matrix"
                       values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
                     />
-                    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_178_43" />
-                    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_178_43" result="shape" />
+                    <feBlend
+                      mode="normal"
+                      in2="BackgroundImageFix"
+                      result="effect1_dropShadow_178_43"
+                    />
+                    <feBlend
+                      mode="normal"
+                      in="SourceGraphic"
+                      in2="effect1_dropShadow_178_43"
+                      result="shape"
+                    />
                   </filter>
                 </defs>
               </svg>
@@ -320,8 +353,17 @@ export default function MyPage() {
                         type="matrix"
                         values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.1 0"
                       />
-                      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_50_139" />
-                      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_50_139" result="shape" />
+                      <feBlend
+                        mode="normal"
+                        in2="BackgroundImageFix"
+                        result="effect1_dropShadow_50_139"
+                      />
+                      <feBlend
+                        mode="normal"
+                        in="SourceGraphic"
+                        in2="effect1_dropShadow_50_139"
+                        result="shape"
+                      />
                     </filter>
                   </defs>
                 </svg>
@@ -330,14 +372,19 @@ export default function MyPage() {
           </div>
 
           <div className={styles.recordsContent}>
-            <h2 className={styles.sectionTitle}>최근 본 운세 기록</h2>
+            <h2 className={styles.sectionTitle}>저장 된 운세 기록</h2>
 
             {/* ✅ 탭 바: 알약은 1개만 두고, 위치/폭만 애니메이션 */}
             <div className={styles.tabs} ref={tabsRef}>
               <motion.div
                 className={styles.tabPill}
                 animate={{ x: indicator.left, width: indicator.width }}
-                transition={{ type: "spring", stiffness: 520, damping: 42, bounce: 0 }}
+                transition={{
+                  type: "spring",
+                  stiffness: 520,
+                  damping: 42,
+                  bounce: 0,
+                }}
               />
 
               {TABS.map((t) => {
@@ -348,7 +395,9 @@ export default function MyPage() {
                     ref={(el) => {
                       if (el) tabBtnRefs.current[t.key] = el;
                     }}
-                    className={`${styles.tab} ${active ? styles.tabActive : ""}`}
+                    className={`${styles.tab} ${
+                      active ? styles.tabActive : ""
+                    }`}
                     onClick={() => setActiveTab(t.key)}
                     type="button"
                   >
@@ -360,27 +409,40 @@ export default function MyPage() {
 
             <div className={styles.grid}>
               {loading ? (
-                <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px" }}>
+                <div
+                  style={{
+                    gridColumn: "1 / -1",
+                    textAlign: "center",
+                    padding: "40px",
+                  }}
+                >
                   로딩 중...
                 </div>
               ) : filtered.length > 0 ? (
                 filtered.map((item) => (
-                  <ResultCard 
-                    key={item.id} 
+                  <ResultCard
+                    key={item.id}
                     title={item.title}
                     onClick={() => {
                       // 기록 타입에 따라 해당 페이지로 이동
-                      if (item.recordType === "compatibility" && item.metadata) {
+                      if (
+                        item.recordType === "compatibility" &&
+                        item.metadata
+                      ) {
                         // 궁합 결과 페이지로 이동
                         navigate("/result", {
                           state: {
                             compatibility: {
                               score: item.metadata.score || 0,
                               analysis: item.metadata.analysis || "",
-                              communication_analysis: item.metadata.communication_analysis || "",
-                              emotion_analysis: item.metadata.emotion_analysis || "",
-                              lifestyle_analysis: item.metadata.lifestyle_analysis || "",
-                              caution_analysis: item.metadata.caution_analysis || "",
+                              communication_analysis:
+                                item.metadata.communication_analysis || "",
+                              emotion_analysis:
+                                item.metadata.emotion_analysis || "",
+                              lifestyle_analysis:
+                                item.metadata.lifestyle_analysis || "",
+                              caution_analysis:
+                                item.metadata.caution_analysis || "",
                             },
                             myInfo: {
                               userName: userInfo.name || "",
@@ -398,7 +460,10 @@ export default function MyPage() {
                             metadata: item.metadata,
                           },
                         });
-                      } else if (item.recordType === "similar_friend" || item.recordType === "today_fortune") {
+                      } else if (
+                        item.recordType === "similar_friend" ||
+                        item.recordType === "today_fortune"
+                      ) {
                         // 유사 친구 또는 오늘의 운세 페이지로 이동
                         navigate("/similar-friend", {
                           state: {
@@ -411,7 +476,14 @@ export default function MyPage() {
                   />
                 ))
               ) : (
-                <div style={{ gridColumn: "1 / -1", textAlign: "center", padding: "40px", color: "#666" }}>
+                <div
+                  style={{
+                    gridColumn: "1 / -1",
+                    textAlign: "center",
+                    padding: "40px",
+                    color: "#666",
+                  }}
+                >
                   기록이 없습니다.
                 </div>
               )}

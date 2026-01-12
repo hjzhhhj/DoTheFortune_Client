@@ -109,25 +109,22 @@
 
 /* 왼쪽 로고 */
 .homePage .home-logo {
-  width: 44px;
-  height: 44px;
-  object-fit: contain;
-
-  position: relative;
+  width: 60px;
+  height: 60px;
+  display: block;
   z-index: 1;
+  margin-left: 26px;
 }
 
 /* 타이틀 */
 .homePage .top-container h1 {
-  margin: 0;
   position: relative;
   z-index: 1;
-
   font-size: 28px;
-  font-weight: 800;
-  letter-spacing: -0.5px;
+  font-weight: 500;
   color: #1b1b1b;
-  line-height: 1;
+  letter-spacing: -0.02em;
+  margin-left: 2px;
 }
 
 /* 오른쪽 프로필 아이콘(svg) */
@@ -138,28 +135,6 @@
 
   width: 44px;
   height: 44px;
-}
-
-/* 모바일 살짝 정리 */
-@media (max-width: 420px) {
-  .homePage .top-container {
-    height: 96px;
-    padding: 16px 16px;
-  }
-
-  .homePage .home-logo {
-    width: 40px;
-    height: 40px;
-  }
-
-  .homePage .top-container h1 {
-    font-size: 24px;
-  }
-
-  .homePage .top-container > svg:last-of-type {
-    width: 40px;
-    height: 40px;
-  }
 }
 
 /* =============================
@@ -173,17 +148,11 @@
 }
 
 .homePage .homeDashboard__inner {
-  width: min(1200px, calc(100% - 140px));
+  width: 90%;
   margin: 0 auto;
   display: flex;
   gap: 40px;
   align-items: flex-start;
-}
-
-@media (max-width: 1200px) {
-  .homePage .homeDashboard__inner {
-    width: calc(100% - 48px);
-  }
 }
 
 .homePage .homeDashboard__col {
@@ -213,7 +182,7 @@
   align-items: center;
   justify-content: center;
 
-  padding: 14px 26px;
+  padding: 60px 26px;
   border-radius: 999px;
   background: #ffffff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
@@ -237,14 +206,14 @@
   z-index: 1;
   text-align: center;
   padding: 0 26px;
-  font-size: 16px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 600;
   letter-spacing: -0.2px;
 }
 
 .homePage .homeDashboard__pill--svg {
-  width: 320px;
-  height: 72px;
+  width: 600px;
+  height: 120px;
   max-width: 100%;
 
   padding: 0;
@@ -270,7 +239,7 @@
 .homePage .homeDashboard__card {
   position: relative;
   width: 100%;
-  height: var(--homeCardH);
+  height: 280px;
   border: none;
   border-radius: 22px;
   overflow: hidden;
@@ -294,16 +263,16 @@
 
 .homePage .homeDashboard__cardText {
   position: absolute;
-  left: 22px;
-  bottom: 18px;
+  left: 28px;
+  bottom: 22px;
   color: #fff;
   z-index: 1;
 }
 
 .homePage .homeDashboard__rank {
   font-family: "Paperozi";
-  font-weight: 800;
-  font-size: 34px;
+  font-weight: 600;
+  font-size: 28px;
   line-height: 1;
   margin-bottom: 8px;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
@@ -311,7 +280,7 @@
 
 .homePage .homeDashboard__title {
   font-family: "Paperozi";
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 400;
   line-height: 1.2;
   text-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
@@ -326,16 +295,17 @@
 
   display: flex;
   flex-direction: column;
-  gap: var(--homeCardGap);
+  gap: 0 !important;
   padding: 0;
 }
 
 .homePage .homeDashboard__block {
-  height: var(--homeCardH);
+  min-height: var(--homeCardH);
+  height: auto;
   box-sizing: border-box;
 
   text-align: center;
-  padding: 16px 18px;
+  padding: 32px 18px;
 
   display: flex;
   flex-direction: column;
@@ -346,30 +316,10 @@
 .homePage .homeDashboard__blockTitle {
   margin-top: 0;
   font-weight: 800;
-  font-size: 18px;
+  font-size: 24px;
   margin-bottom: 6px;
   text-align: center;
-}
-
-@media (max-width: 980px) {
-  .homePage .homeDashboard__inner {
-    flex-direction: column;
-    gap: 22px;
-  }
-
-  .homePage .homeDashboard__divider {
-    width: 100%;
-    height: 1px;
-  }
-
-  .homePage {
-    --homeCardH: 170px;
-  }
-
-  .homePage .homeDashboard__pill--svg {
-    height: 64px;
-    width: 280px;
-  }
+  overflow: hidden;
 }
 
 /* =========================
@@ -378,14 +328,12 @@
 
 .homePage .homeDashboard__summaryGrid {
   display: grid;
-  grid-template-columns: 1fr;
   gap: 12px;
   margin-top: 6px;
 }
 
 @media (min-width: 720px) {
   .homePage .homeDashboard__summaryGrid {
-    grid-template-columns: 1fr 1fr;
     gap: 14px;
   }
 }
@@ -393,37 +341,21 @@
 .homePage .homeDashboard__summaryItem {
   position: relative;
   border-radius: 14px;
-  padding: 12px 12px;
-  background: rgba(255, 255, 255, 0.72);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
-  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
-  will-change: transform;
+  padding: 24px;
   cursor: default;
 }
-
-.homePage .homeDashboard__summaryItem:hover {
-  transform: scale(1.045);
-  z-index: 6;
-  background: rgba(255, 255, 255, 0.92);
-  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.12);
-}
-
 .homePage .homeDashboard__summaryLabel {
-  font-size: 13px;
-  font-weight: 800;
+  font-size: 22px;
+  font-weight: 700;
   letter-spacing: -0.2px;
-  color: rgba(0, 0, 0, 0.76);
   margin-bottom: 6px;
 }
 
 .homePage .homeDashboard__summaryText {
   margin: 0;
-  font-size: 13px;
+  font-size: 18px;
   line-height: 1.55;
   letter-spacing: -0.2px;
-  color: rgba(0, 0, 0, 0.76);
 
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -442,17 +374,20 @@
 ========================= */
 
 .homePage .homeDashboard__pairRow {
-  height: calc(var(--homeCardH) * 2 + var(--homeCardGap));
+  height: auto !important;
   box-sizing: border-box;
 
   display: grid;
   grid-template-columns: 1fr 1px 1fr;
   align-items: stretch;
 
-  padding: 16px 18px;
+  padding: 16px 8px;
   text-align: center;
 
   border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 .homePage .homeDashboard__pairCol {
@@ -460,15 +395,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-  padding: 8px 10px;
+  justify-content: flex-start; /* center → flex-start */
+  padding-top: 0;
 }
 
 .homePage .homeDashboard__pairTitle {
   font-family: "Paperozi";
-  font-weight: 900;
-  font-size: 22px;
+  font-weight: 700;
+  font-size: 24px;
   letter-spacing: -0.4px;
   margin: 0;
 }
@@ -477,18 +411,20 @@
   background: rgba(0, 0, 0, 0.12);
   border-radius: 999px;
   margin: 18px 0;
+  display: none;
 }
 
 @media (max-width: 720px) {
   .homePage .homeDashboard__pairRow {
     height: auto;
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: auto 1px auto;
     gap: 14px;
   }
 
   .homePage .homeDashboard__pairDivider {
     margin: 0;
+    display: none;
   }
 }
 
@@ -498,13 +434,10 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 12px;
 
   padding: 14px 14px;
   border-radius: 18px;
   background: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.06);
 }
 
 .homePage .homeDashboard__pairCol .homeDashboard__luckyRow {
@@ -559,7 +492,6 @@
   border-radius: 999px;
   padding: 7px 11px;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
   letter-spacing: 0.3px;
 }
 
@@ -570,7 +502,6 @@
   justify-content: center;
   width: 100%;
   gap: 12px;
-  margin-top: 12px;
 }
 
 .homePage .homeDashboard__pairCol .homeDashboard__numberWrap {
@@ -590,7 +521,6 @@
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 12px 26px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 420px) {
@@ -599,35 +529,67 @@
   }
 }
 
+/* =========================
+   행운의 컬러 / 행운의 숫자 (선 제거 버전)
+========================= */
+
 .homePage .homeDashboard__pairRow {
-  border-top: 0 !important;
-  padding-top: 18px;
+  height: calc(var(--homeCardH) * 2 + var(--homeCardGap));
+  box-sizing: border-box;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* ✅ 2컬럼 고정 */
+  align-items: stretch;
+
+  padding: 12px 18px; /* 위 여백도 줄임 */
+  text-align: center;
+
+  border-top: none !important; /* ✅ 선 제거 */
 }
 
-/* 운세요약(첫 블록) */
-.homePage .homeDashboard__panel > .homeDashboard__block:first-child {
-  position: relative;
-  border-bottom: 0 !important; /* 기존 border-bottom이 있으면 제거 */
-  padding-bottom: 22px;
+.homePage .homeDashboard__pairCol {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 10px;
 }
 
-.homePage .homeDashboard__panel > .homeDashboard__block:first-child::after {
-  content: "";
-  position: absolute;
-  left: 18px;
-  right: 18px;
-  bottom: 0;
-  height: 1px;
-  border-radius: 999px;
+/* ✅ 가운데 divider 완전 제거 */
+.homePage .homeDashboard__pairDivider {
+  display: none;
 }
 
-/* ✅ 행운의 컬러: 동그라미 → 이름 → 오행 → 헥사코드 */
+/* =========================
+   모바일 대응 (깨짐 방지 핵심)
+========================= */
+@media (max-width: 720px) {
+  .homePage .homeDashboard__pairRow {
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto; /* ✅ 1px row 제거 */
+    gap: 16px;
+  }
+}
+
+/* =========================
+   행운의 컬러
+========================= */
+
 .homePage .homeDashboard__luckyRow {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: flex-start;
+  --lucky: #d9d9d9;
+  display: flex;
+  align-items: center;
   gap: 14px;
+
+  padding: 14px;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+
+  width: min(460px, 100%);
 }
 
 .homePage .homeDashboard__colorChip {
@@ -643,7 +605,6 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 6px;
-  min-width: 0;
 }
 
 .homePage .homeDashboard__luckyMain {
@@ -667,6 +628,31 @@
   border-radius: 999px;
   padding: 8px 12px;
   border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.06);
-  letter-spacing: 0.3px;
+}
+
+/* =========================
+   행운의 숫자
+========================= */
+
+.homePage .homeDashboard__numberWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.homePage .homeDashboard__numberPill {
+  width: 56px;
+  height: 56px;
+  border-radius: 18px;
+  display: grid;
+  place-items: center;
+
+  font-size: 24px;
+  font-weight: 900;
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.homePage .homeDashboard__panel > .homeDashboard__block {
+  margin-bottom: 0 !important; /* 필요하면 8~16 조절 */
 }

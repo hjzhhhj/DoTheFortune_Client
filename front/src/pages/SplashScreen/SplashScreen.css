@@ -140,37 +140,30 @@
 
 /* --- CTA button --- */
 .splashRoot button {
-  font-family: "PaperoziSplash", sans-serif;
-  font-weight: 600;
-    
+  font-family: "Paperozi", sans-serif;
+  font-weight: 500;
+
   position: absolute;
   left: 50%;
-  top: 68.5%;
+  top: 73.5%;
   transform: translate(-50%, -50%);
 
-  width: min(680px, 72vw);
-  height: clamp(54px, 6.2vw, 78px);
+  width: min(640px, 77vw);
+  height: 54px;
 
-  border: 0;
-  border-radius: 18px;
-  background: var(--splash-btn);
+  border: none;
+  border-radius: 12px;
+  background: #fff3b0;
 
-  color: var(--splash-text);
-  font-weight: 700;
-  font-size: clamp(18px, 2.2vw, 26px);
+  color: #333;
+  font-size: 16px;
 
   cursor: pointer;
   z-index: 2;
-
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-}
-
-.splashRoot button:hover {
-  filter: brightness(0.98);
 }
 
 .splashRoot button:active {
-  transform: translate(-50%, -50%) scale(0.99);
+  transform: translate(-50%, -50%) translateY(1px);
 }
 
 .splashRoot button:focus-visible {
@@ -186,6 +179,6 @@
 
   .splashRoot button {
     top: 70.5%;
-    width: min(340px, 82vw);
+    width: min(640px, 77vw);
   }
 }

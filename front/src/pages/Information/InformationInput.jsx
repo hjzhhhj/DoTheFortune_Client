@@ -1,12 +1,19 @@
 import React, { useMemo, useState, useEffect } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion";
 import AuthLayout from "../../components/auth/AuthLayout";
 import AuthFrame from "../../components/auth/AuthFrame";
 import "./InformationInput.css";
 import Goback from "../../components/goback";
 import Loading from "../../components/loading/Loading";
 import LoadingSuccess from "../../components/loading/LoadingSuccess";
-import { saveUserInfo, findSimilarFriends, getSimilarUserMatches, register, getFortuneInfo } from "../../utils/api";
+import {
+  saveUserInfo,
+  findSimilarFriends,
+  getSimilarUserMatches,
+  register,
+  getFortuneInfo,
+} from "../../utils/api";
 
 export default function InformationInput() {
   const navigate = useNavigate();
@@ -15,7 +22,8 @@ export default function InformationInput() {
 
   // 회원가입 플로우인지 확인
   const isSignup = location?.state?.isSignup || false;
-  const signupEmail = location?.state?.email || localStorage.getItem("signup_email") || "";
+  const signupEmail =
+    location?.state?.email || localStorage.getItem("signup_email") || "";
   const signupPassword = localStorage.getItem("signup_password") || "";
 
   // Banner.jsx에서 넘겨준 타입(1|2|3) 받기
@@ -35,7 +43,7 @@ export default function InformationInput() {
     ? "미래 배우자 보러가기"
     : bannerType === 3
     ? "다음으로"
-    : "정보 저장하기";
+    : "회원가입 완료하기";
 
   // 로딩 오버레이
   const [isLoading, setIsLoading] = useState(false);
@@ -96,7 +104,7 @@ export default function InformationInput() {
       : "/home";
 
   // 회원가입 플로우가 아니면 localStorage에서 가져오기
-  const name = isSignup ? "" : (localStorage.getItem("name") || "");
+  const name = isSignup ? "" : localStorage.getItem("name") || "";
 
   const [form, setForm] = useState({
     userName: name,
@@ -115,7 +123,7 @@ export default function InformationInput() {
     const checkExistingInfo = async () => {
       try {
         const fortuneInfo = await getFortuneInfo();
-        
+
         // 저장된 정보가 있는 경우
         if (fortuneInfo && fortuneInfo.birth_year) {
           if (bannerType === 3) {
@@ -173,10 +181,12 @@ export default function InformationInput() {
     if (isSignup) {
       setIsLoading(true);
       setIsSuccessOpen(false);
-      
+
       try {
         // 생년월일 파싱 (YYYY-MM-DD 형식)
-        const [birthYear, birthMonth, birthDay] = form.birthDate.split("-").map(Number);
+        const [birthYear, birthMonth, birthDay] = form.birthDate
+          .split("-")
+          .map(Number);
         const [birthHour, birthMinute] = form.birthTime.split(":").map(Number);
 
         // 회원가입 API 호출 (모든 정보 포함)
@@ -199,7 +209,7 @@ export default function InformationInput() {
         // 회원가입 완료 후 localStorage 정리
         localStorage.removeItem("signup_email");
         localStorage.removeItem("signup_password");
-        
+
         // 토큰 저장
         if (response.token) {
           localStorage.setItem("token", response.token);
@@ -231,7 +241,9 @@ export default function InformationInput() {
       // 내 정보를 먼저 저장
       setIsLoading(true);
       try {
-        const [birthYear, birthMonth, birthDay] = form.birthDate.split("-").map(Number);
+        const [birthYear, birthMonth, birthDay] = form.birthDate
+          .split("-")
+          .map(Number);
         const [birthHour, birthMinute] = form.birthTime.split(":").map(Number);
 
         const fortuneInfo = {
@@ -245,7 +257,7 @@ export default function InformationInput() {
         };
 
         await saveUserInfo(fortuneInfo);
-        
+
         // 내 정보 저장 후 상대방 정보 입력으로 이동
         navigate("/other-party-information", {
           state: {
@@ -255,7 +267,9 @@ export default function InformationInput() {
         });
       } catch (err) {
         console.error("내 정보 저장 오류:", err);
-        alert(err.message || "정보 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+        alert(
+          err.message || "정보 저장 중 오류가 발생했습니다. 다시 시도해 주세요."
+        );
       } finally {
         setIsLoading(false);
       }
@@ -268,7 +282,9 @@ export default function InformationInput() {
     setIsLoading(true);
     try {
       // 생년월일 파싱 (YYYY-MM-DD 형식)
-      const [birthYear, birthMonth, birthDay] = form.birthDate.split("-").map(Number);
+      const [birthYear, birthMonth, birthDay] = form.birthDate
+        .split("-")
+        .map(Number);
       const [birthHour, birthMinute] = form.birthTime.split(":").map(Number);
 
       // 백엔드 API 형식에 맞게 데이터 변환
@@ -314,7 +330,11 @@ export default function InformationInput() {
     <AuthLayout>
       {!isSignup && <Goback />}
       <AuthFrame>
-        <h1 className="infoTitle">{isSignup ? "정보를 입력해주세요!" : `${name}님의 정보를 입력해주세요!`}</h1>
+        <h1 className="infoTitle">
+          {isSignup
+            ? "정보를 입력해주세요!"
+            : `${name}님의 정보를 입력해주세요!`}
+        </h1>
 
         <form className="infoForm" onSubmit={onSubmit}>
           {/* 이름 */}
@@ -328,39 +348,87 @@ export default function InformationInput() {
 
           {/* 성별 */}
           <div className="segmented" role="group" aria-label="성별 선택">
-            <button
+            <motion.button
               type="button"
               className={`segBtn ${form.gender === "male" ? "active" : ""}`}
               onClick={() => onToggle("gender", "male")}
+              animate={{
+                background: form.gender === "male" ? "#fff3b0" : "#f3f3f3",
+                color: form.gender === "male" ? "#333" : "#555",
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 520,
+                damping: 42,
+                bounce: 0,
+              }}
             >
               남성
-            </button>
-            <button
+            </motion.button>
+            <motion.button
               type="button"
               className={`segBtn ${form.gender === "female" ? "active" : ""}`}
               onClick={() => onToggle("gender", "female")}
+              animate={{
+                background: form.gender === "female" ? "#fff3b0" : "#f3f3f3",
+                color: form.gender === "female" ? "#333" : "#555",
+              }}
+              transition={{
+                type: "spring",
+                stiffness: 520,
+                damping: 42,
+                bounce: 0,
+              }}
             >
               여성
-            </button>
+            </motion.button>
           </div>
 
           {/* 양력/음력 + 생년월일/시간 */}
           <div className="row">
-            <div className="segmented small" role="group" aria-label="양력/음력 선택">
-              <button
+            <div
+              className="segmented small"
+              role="group"
+              aria-label="양력/음력 선택"
+            >
+              <motion.button
                 type="button"
-                className={`segBtn ${form.calendar === "solar" ? "active" : ""}`}
+                className={`segBtn ${
+                  form.calendar === "solar" ? "active" : ""
+                }`}
                 onClick={() => onToggle("calendar", "solar")}
+                animate={{
+                  background: form.calendar === "solar" ? "#fff3b0" : "#f3f3f3",
+                  color: form.calendar === "solar" ? "#333" : "#555",
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 520,
+                  damping: 42,
+                  bounce: 0,
+                }}
               >
                 양력
-              </button>
-              <button
+              </motion.button>
+              <motion.button
                 type="button"
-                className={`segBtn ${form.calendar === "lunar" ? "active" : ""}`}
+                className={`segBtn ${
+                  form.calendar === "lunar" ? "active" : ""
+                }`}
                 onClick={() => onToggle("calendar", "lunar")}
+                animate={{
+                  background: form.calendar === "lunar" ? "#fff3b0" : "#f3f3f3",
+                  color: form.calendar === "lunar" ? "#333" : "#555",
+                }}
+                transition={{
+                  type: "spring",
+                  stiffness: 520,
+                  damping: 42,
+                  bounce: 0,
+                }}
               >
                 음력
-              </button>
+              </motion.button>
             </div>
 
             {/* 날짜 */}
