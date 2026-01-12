@@ -39,7 +39,11 @@ export default function Login() {
         <AuthTitle>LOGIN</AuthTitle>
 
         <form className="authForm" onSubmit={onSubmit}>
-          {error && <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>}
+          <div className="errorMessage">
+            {error && (
+              <div style={{ color: "red", marginBottom: "10px" }}>{error}</div>
+            )}
+          </div>
           <AuthInput
             type="email"
             placeholder="이메일을 입력해주세요"
@@ -64,7 +68,11 @@ export default function Login() {
           </AuthButton>
         </form>
 
-        <AuthFooter text="계정이 없으신가요?" linkText="회원가입하기" to="/signup" />
+        <AuthFooter
+          text="계정이 없으신가요?"
+          linkText="회원가입하기"
+          to="/signup"
+        />
       </AuthFrame>
     </AuthLayout>
   );

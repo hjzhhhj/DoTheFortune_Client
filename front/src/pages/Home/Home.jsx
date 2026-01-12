@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
 
-import Logo from "../../assets/homelogo.svg";
+import Logo from "../../assets/Logo.svg";
 import Card1 from "../../assets/Card1.png";
 import Card2 from "../../assets/Card2.png";
 import Card3 from "../../assets/Card3.png";
@@ -88,8 +88,7 @@ async function getHomeDaily(nickname) {
         "오늘은 큰 흐름에서 욕심내기보다 ‘정리’에 강점이 있어요. 우선순위만 잡아도 일이 빠르게 매듭지어지는 날이에요.",
       wealth:
         "작은 지출이 모이기 쉬워요. 즉흥 결제는 한 번만 멈추고, 필요한 항목만 남기면 금전 흐름이 안정돼요.",
-      love:
-        "감정 표현은 짧고 분명할수록 좋아요. 상대를 바꾸려 하기보다 ‘내가 원하는 것’을 담백하게 말하면 관계가 부드러워져요.",
+      love: "감정 표현은 짧고 분명할수록 좋아요. 상대를 바꾸려 하기보다 ‘내가 원하는 것’을 담백하게 말하면 관계가 부드러워져요.",
       health:
         "컨디션은 무난하지만 피로가 쌓이면 바로 티가 나요. 물/수면 리듬을 지키면 회복이 빠르게 따라와요.",
     },
@@ -128,7 +127,15 @@ export default function Home() {
           />
         </svg>
 
-        <div onClick={() => navigate("/home")} style={{ cursor: "pointer", display: "flex", alignItems: "center", gap: "12px" }}>
+        <div
+          onClick={() => navigate("/home")}
+          style={{
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+          }}
+        >
           <img src={Logo} alt="Home Logo" className="home-logo" />
           <h1>빌려온 사주</h1>
         </div>
@@ -246,7 +253,9 @@ function HomeDashboard({ onNavigate, nickname }) {
                 fill="white"
               />
             </svg>
-            <span className="homeDashboard__pillLabel">지금 뜨고있는 사주 TOP 3</span>
+            <span className="homeDashboard__pillLabel">
+              지금 뜨고있는 사주 TOP 3
+            </span>
           </div>
 
           <div className="homeDashboard__cards">
@@ -280,7 +289,9 @@ function HomeDashboard({ onNavigate, nickname }) {
               );
             })}
 
-            {loading && <div className="homeDashboard__loading">불러오는 중…</div>}
+            {loading && (
+              <div className="homeDashboard__loading">불러오는 중…</div>
+            )}
           </div>
         </div>
 
@@ -310,7 +321,7 @@ function HomeDashboard({ onNavigate, nickname }) {
           <div className="homeDashboard__panel">
             {/* ✅ 운세 요약 */}
             <div className="homeDashboard__block">
-              <div className="homeDashboard__blockTitle">🔮 운세 요약</div>
+              <div className="homeDashboard__blockTitle">🔮 운세 요약 🔮</div>
 
               <div className="homeDashboard__summaryGrid">
                 <div className="homeDashboard__summaryItem">

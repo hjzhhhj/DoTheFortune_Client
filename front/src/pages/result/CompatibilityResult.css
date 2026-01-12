@@ -28,11 +28,12 @@
 
 .compat-content {
   width: 100%;
-  max-width: 1500px;
-  padding: 0 24px;
+  max-width: 100%;
+  padding: 0px 60px;
   box-sizing: border-box;
   position: relative;
   z-index: 1;
+  overflow-x: hidden;
 }
 
 /* 배경 레이어 */
@@ -45,7 +46,8 @@
 
 .compat-bg-layer {
   position: absolute;
-  width: 1508px;
+  width: 100%;
+  max-width: 1300px;
   height: 865px;
   left: 50%;
   transform: translateX(-50%);
@@ -80,8 +82,7 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 32px 0;
-  margin-left: -170px;
+  padding: 28px 0;
 }
 
 .compat-logo-wrap {
@@ -111,11 +112,11 @@
 .compat-main-title {
   margin: 12px 0 48px;
   text-align: center;
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 700;
   color: #333;
   line-height: 1.2;
-  margin-top: 70px;
+  margin-top: 12%;
 }
 
 /* 사용자 정보 카드 */
@@ -129,7 +130,8 @@
 
 .compat-user-card {
   position: relative;
-  width: 520px;
+  width: 100%;
+  max-width: 450px;
   height: 240px;
   display: flex;
   align-items: center;
@@ -173,14 +175,15 @@
 .compat-section {
   position: relative;
   margin: 0 auto 56px;
-  padding: 80px 100px;
+  padding: 60px 80px;
   width: 100%;
-  max-width: 1400px;
+  max-width: 100%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
 }
 
 /* 섹션 배경을 흰색 blob 모양과 동일한 형태로 사용 */
@@ -200,18 +203,26 @@
   position: relative;
   z-index: 1;
   width: 100%;
+  max-width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
 }
 
 .compat-section-title {
   margin: 0 0 32px;
   text-align: center;
-  font-size: 30px;
+  font-size: 36px;
   font-weight: 600;
   color: #000;
+  width: 100%;
+  max-width: 100%;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  padding: 0 80px;
 }
 
 /* 두 사람의 오행 비교 */
@@ -255,13 +266,18 @@
 
 .compat-analysis-text {
   margin: 0;
-  max-width: 900px;
+  max-width: 100%;
+  width: 100%;
   text-align: center;
   font-size: 28px;
   font-weight: 500;
   color: #000;
   line-height: 1.6;
   white-space: pre-wrap;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  box-sizing: border-box;
+  padding: 0 80px;
 }
 
 /* 하단 버튼 */
@@ -274,13 +290,14 @@
 }
 
 .compat-action-btn {
-  width: 780px;
-  max-width: 100%;
-  height: 76px;
+  width: 100%;
+  max-width: 800px;
+  height: 70px;
   border: none;
   border-radius: 18px;
   background: #fff3ae;
-  font-size: 26px;
+  font-size: 24px;
+  font-family: "Paperozi";
   font-weight: 500;
   color: #333;
   cursor: pointer;
@@ -301,7 +318,8 @@
 /* 반응형 */
 @media (max-width: 1280px) {
   .compat-bg-layer {
-    width: 1300px;
+    width: 100%;
+    max-width: 1000px;
     height: 750px;
   }
 }
