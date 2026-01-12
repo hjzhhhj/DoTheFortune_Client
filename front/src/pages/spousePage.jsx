@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import styled, { createGlobalStyle } from 'styled-components';
-import logo from '../assets/logo.svg';
-import { createRecord, getSpouseImage } from '../utils/api';
-import { captureAndDownload } from '../utils/screenshot';
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
+import styled, { createGlobalStyle } from "styled-components";
+import logo from "../assets/Logo.svg";
+import { createRecord, getSpouseImage } from "../utils/api";
+import { captureAndDownload } from "../utils/screenshot";
 
 const GlobalStyle = createGlobalStyle`
   * { box-sizing: border-box; }
@@ -40,7 +40,9 @@ const TopHeader = styled.div`
 const Logo = styled.div`
   font-size: 50px;
   line-height: 1;
-  img { width: 50px; }
+  img {
+    width: 50px;
+  }
 `;
 
 const Title = styled.div`
@@ -157,7 +159,7 @@ const SaveButton = styled.button`
   width: 100%;
   max-width: 500px;
   height: 48px;
-  background: #FFF3AE;
+  background: #fff3ae;
   border: none;
   border-radius: 10px;
   font-size: 16px;
@@ -168,7 +170,7 @@ const SaveButton = styled.button`
   font-weight: 400;
 
   &:hover {
-    background: #FFD93D;
+    background: #ffd93d;
     transform: translateY(-2px);
   }
   &:active {
@@ -180,7 +182,7 @@ const ShareButton = styled.button`
   width: 100%;
   max-width: 500px;
   height: 48px;
-  background: #E8F4F8;
+  background: #e8f4f8;
   border: none;
   border-radius: 10px;
   font-size: 16px;
@@ -192,7 +194,7 @@ const ShareButton = styled.button`
   margin-top: 12px;
 
   &:hover {
-    background: #D0E8F0;
+    background: #d0e8f0;
     transform: translateY(-2px);
   }
   &:active {
@@ -221,7 +223,7 @@ const LoadingMessage = styled.div`
 export default function SpousePage() {
   const navigate = useNavigate();
   const [saved, setSaved] = useState(false);
-  
+
   const [spouseData, setSpouseData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -232,11 +234,11 @@ export default function SpousePage() {
       try {
         setLoading(true);
         setError(null);
-        
+
         const response = await getSpouseImage();
-        
-        if (response.status !== 'success' || !response.data) {
-          throw new Error('데이터를 가져오지 못했습니다.');
+
+        if (response.status !== "success" || !response.data) {
+          throw new Error("데이터를 가져오지 못했습니다.");
         }
 
         const data = response.data;
@@ -250,10 +252,9 @@ export default function SpousePage() {
         };
 
         setSpouseData(spouseData);
-
       } catch (err) {
-        console.error('배우자 이미지 조회 실패:', err);
-        setError(err.message || '결과를 가져오지 못했습니다.');
+        console.error("배우자 이미지 조회 실패:", err);
+        setError(err.message || "결과를 가져오지 못했습니다.");
       } finally {
         setLoading(false);
       }
@@ -264,11 +265,15 @@ export default function SpousePage() {
 
   const handleSave = async () => {
     if (saved) return;
-    
+
     try {
       setSaved(true);
-      
-      const content = `나의 미래 배우자\n인상: ${spouseData?.impression?.join(", ") || ""}\n패션: ${spouseData?.fashion?.join(", ") || ""}\n무드: ${spouseData?.mood?.join(", ") || ""}\n직업: ${spouseData?.job?.join(", ") || ""}`;
+
+      const content = `나의 미래 배우자\n인상: ${
+        spouseData?.impression?.join(", ") || ""
+      }\n패션: ${spouseData?.fashion?.join(", ") || ""}\n무드: ${
+        spouseData?.mood?.join(", ") || ""
+      }\n직업: ${spouseData?.job?.join(", ") || ""}`;
       const metadata = JSON.stringify({
         impression: spouseData?.impression || [],
         fashion: spouseData?.fashion || [],
@@ -284,7 +289,7 @@ export default function SpousePage() {
         metadata: metadata,
       });
 
-      alert('저장되었습니다! 📸');
+      alert("저장되었습니다! 📸");
     } catch (err) {
       console.error("저장 실패:", err);
       setSaved(false);
@@ -331,15 +336,23 @@ export default function SpousePage() {
       <Container>
         <TopHeader>
           <Logo onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>
-            <img src={logo} alt="logo"/>
+            <img src={logo} alt="logo" />
           </Logo>
-          <Title onClick={() => navigate("/home")} style={{ cursor: "pointer" }}>빌려온 사주</Title>
+          <Title
+            onClick={() => navigate("/home")}
+            style={{ cursor: "pointer" }}
+          >
+            빌려온 사주
+          </Title>
         </TopHeader>
 
         <ContentCard ref={contentCardRef}>
           <TextGroup>
             <MainTitle>나의 미래 배우자는?</MainTitle>
-            <Subtitle>실제 인물을 예측하는 것이 아니며, 사주 성향을 바탕으로 시각화한 이미지입니다.</Subtitle>
+            <Subtitle>
+              실제 인물을 예측하는 것이 아니며, 사주 성향을 바탕으로 시각화한
+              이미지입니다.
+            </Subtitle>
           </TextGroup>
 
           <ResultSection>
@@ -386,14 +399,12 @@ export default function SpousePage() {
 
           <ButtonContainer>
             <SaveButton onClick={handleSave}>
-              {saved ? '저장 완료! ✅' : '나의 미래 배우자 저장하기'}
+              {saved ? "저장 완료! ✅" : "나의 미래 배우자 저장하기"}
             </SaveButton>
-            <ShareButton onClick={handleShare}>
-              공유하기
-            </ShareButton>
+            <ShareButton onClick={handleShare}>공유하기</ShareButton>
           </ButtonContainer>
         </ContentCard>
       </Container>
     </>
   );
-};
+}
