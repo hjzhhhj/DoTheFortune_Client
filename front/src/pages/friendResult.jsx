@@ -2,13 +2,17 @@ import { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import Header from "../components/Header";
-import { getSimilarUserMatches, getFortuneInfo, createRecord } from "../utils/api";
+import {
+  getSimilarUserMatches,
+  getFortuneInfo,
+  createRecord,
+} from "../utils/api";
 import { captureAndDownload } from "../utils/screenshot";
 
 import cloud from "../assets/cloud.png";
-import darkCloud from "../assets/darkCloud.png";
+import darkCloud from "../assets/darkcloud.png";
 import smallCloud from "../assets/smallDarkCloud.png";
-import logo from '../assets/logo.svg';
+import logo from "../assets/logo.svg";
 
 const GlobalStyle = createGlobalStyle`
   
@@ -33,12 +37,11 @@ const Page = styled.div`
   display: flex;
   justify-content: center;
   padding-top: 80px;
-  min-height: 100vh;      
-  background: #fff9d7;   
-  padding-bottom: 100px;  
-  box-sizing: border-box; 
-  `;
-
+  min-height: 100vh;
+  background: #fff9d7;
+  padding-bottom: 100px;
+  box-sizing: border-box;
+`;
 
 const CardWrap = styled.div`
   position: relative;
@@ -56,9 +59,18 @@ const BigCloud = styled.div`
   background: url(${cloud}) no-repeat center / contain;
 `;
 
-const Big1 = styled(BigCloud)`top: -100px; z-index: 3;`;
-const Big2 = styled(BigCloud)`top: 175px; z-index: 2;`;
-const Big3 = styled(BigCloud)`top: 350px; z-index: 1;`;
+const Big1 = styled(BigCloud)`
+  top: -100px;
+  z-index: 3;
+`;
+const Big2 = styled(BigCloud)`
+  top: 175px;
+  z-index: 2;
+`;
+const Big3 = styled(BigCloud)`
+  top: 350px;
+  z-index: 1;
+`;
 
 const Content = styled.div`
   position: absolute;
@@ -175,7 +187,7 @@ const InfoWrapper = styled.div`
   margin-top: 20px;
 `;
 const InfoRow = styled.div`
-   margin-top: 16px;   
+  margin-top: 16px;
   margin-bottom: 5px;
   display: flex;
   justify-content: space-between;
@@ -201,14 +213,13 @@ const Percent = styled.div`
 const MatchText = styled.span`
   font-size: 12px;
   font-weight: 500;
-  
 `;
 const HeaderWrapper = styled.div`
   position: absolute;
   top: 30px;
   left: 40px;
   z-index: 10;
-  
+
   .topBar,
   .header__topBar {
     margin-bottom: 0;
@@ -234,7 +245,7 @@ export default function FriendResult() {
 
         // 유사 사주 친구 매칭 결과 가져오기
         const matchesData = await getSimilarUserMatches();
-        
+
         // 내 사주 정보 가져오기
         const myFortuneInfo = await getFortuneInfo();
 
@@ -247,7 +258,10 @@ export default function FriendResult() {
         const formatBirthDate = (user) => {
           if (!user || !user.fortune_info) return "";
           const { birth_year, birth_month, birth_day } = user.fortune_info;
-          return `${birth_year}.${String(birth_month).padStart(2, "0")}.${String(birth_day).padStart(2, "0")}`;
+          return `${birth_year}.${String(birth_month).padStart(
+            2,
+            "0"
+          )}.${String(birth_day).padStart(2, "0")}`;
         };
 
         // 사주 정보 파싱 함수
@@ -319,7 +333,14 @@ export default function FriendResult() {
           />
         </HeaderWrapper>
         <Page>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+            }}
+          >
             <div>유사 사주 친구를 찾는 중...</div>
           </div>
         </Page>
@@ -339,7 +360,15 @@ export default function FriendResult() {
           />
         </HeaderWrapper>
         <Page>
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh", color: "red" }}>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "100vh",
+              color: "red",
+            }}
+          >
             <div>{error || "데이터를 불러올 수 없습니다."}</div>
           </div>
         </Page>
@@ -380,14 +409,13 @@ export default function FriendResult() {
             <MidCloud>
               <div>나와 비슷한 사주를 가진 학생</div>
               <InfoWrapper>
-               <InfoRow>
+                <InfoRow>
                   <NameBirth>
                     <b>{result.similar.name}</b>
                     <div>{result.similar.birth}</div>
                   </NameBirth>
                   <Percent>
-                    {result.similar.percent}%
-                    <MatchText>일치</MatchText>
+                    {result.similar.percent}%<MatchText>일치</MatchText>
                   </Percent>
                 </InfoRow>
               </InfoWrapper>
@@ -403,7 +431,11 @@ export default function FriendResult() {
                     <SajuCol key={key}>
                       <SajuTitle>{label}</SajuTitle>
                       <SajuCard>
-                        {v.sky ? <Sky red={key !== "wol"}>{v.sky}</Sky> : <EmptyCircle />}
+                        {v.sky ? (
+                          <Sky red={key !== "wol"}>{v.sky}</Sky>
+                        ) : (
+                          <EmptyCircle />
+                        )}
                         {v.earth ? <Earth>{v.earth}</Earth> : <EmptyCircle />}
                       </SajuCard>
                     </SajuCol>
@@ -413,11 +445,11 @@ export default function FriendResult() {
             </MidCloud>
 
             <Buttons>
-              <Btn 
-                primary 
+              <Btn
+                primary
                 onClick={async () => {
                   if (!result) return;
-                  
+
                   try {
                     const content = `유사 사주 친구 찾기 결과\n비슷한 사주: ${result.similar.name} (${result.similar.percent}% 일치)\n잘 맞는 학생: ${result.bestMatch}\n안 맞는 학생: ${result.worstMatch}`;
                     const metadata = JSON.stringify({
@@ -440,18 +472,23 @@ export default function FriendResult() {
               >
                 관계 저장하기
               </Btn>
-              <Btn 
+              <Btn
                 onClick={async () => {
                   try {
                     if (!cardWrapRef.current) {
                       alert("공유할 내용을 찾을 수 없습니다.");
                       return;
                     }
-                    await captureAndDownload(cardWrapRef.current, "유사사주친구결과");
+                    await captureAndDownload(
+                      cardWrapRef.current,
+                      "유사사주친구결과"
+                    );
                     alert("이미지가 저장되었습니다! 📸");
                   } catch (err) {
                     console.error("캡처 실패:", err);
-                    alert("이미지 저장 중 오류가 발생했습니다. 다시 시도해 주세요.");
+                    alert(
+                      "이미지 저장 중 오류가 발생했습니다. 다시 시도해 주세요."
+                    );
                   }
                 }}
               >
