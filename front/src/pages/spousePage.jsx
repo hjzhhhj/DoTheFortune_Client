@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
-import logo from "../assets/Logo.svg";
+import logo from "../assets/logo.svg";
 import { createRecord, getSpouseImage } from "../utils/api";
 import { captureAndDownload } from "../utils/screenshot";
 

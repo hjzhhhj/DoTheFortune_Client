@@ -16,7 +16,7 @@ import {
 } from "../../utils/api";
 import { removeToken } from "../../utils/api";
 
-import Logo from "../../assets/Logo.svg";
+import Logo from "../../assets/logo.svg";
 import ProfileIcon from "../../assets/profile.svg";
 import ResultCard from "../../components/mypage/result";
 

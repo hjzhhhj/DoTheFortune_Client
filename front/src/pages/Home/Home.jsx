@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import "./Home.css";
 import { useNavigate } from "react-router-dom";
 
-import Logo from "../../assets/Logo.svg";
+import Logo from "../../assets/logo.svg";
 import Card1 from "../../assets/Card1.png";
 import Card2 from "../../assets/Card2.png";
 import Card3 from "../../assets/Card3.png";

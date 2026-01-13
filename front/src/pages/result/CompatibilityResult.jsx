@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./CompatibilityResult.css";
-import Logo from "../../assets/Logo.svg";
+import Logo from "../../assets/logo.svg";
 import { createRecord } from "../../utils/api";
 import { captureAndDownload } from "../../utils/screenshot";
 

@@ -12,7 +12,7 @@ import { captureAndDownload } from "../utils/screenshot";
 import cloud from "../assets/cloud.png";
 import darkCloud from "../assets/darkcloud.png";
 import smallCloud from "../assets/smallDarkCloud.png";
-import logo from "../assets/Logo.svg";
+import logo from "../assets/logo.svg";
 
 const GlobalStyle = createGlobalStyle`
   
