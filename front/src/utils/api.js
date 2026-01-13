@@ -1,10 +1,10 @@
 /**
  * Go 백엔드 API 유틸리티
- * 기본 URL: http://localhost:8080 (개발 환경)
+ * 기본 URL: https://api.dothefortune.com (배포 환경)
  * 모든 API는 /api/v1로 시작합니다
  */
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8080';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'https://api.dothefortune.com';
 const API_VERSION = '/api/v1';
 
 /**
